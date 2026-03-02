@@ -1,0 +1,23 @@
+{
+  "@@locale": "zh",
+  "navHome": "主页",
+  "navList": "列表",
+  "navMe": "我的",
+  "discoverTitle": "Find",
+  "discoverCreate": "创建",
+  "discoverSearchHint": "点击搜索",
+  "creatorPrefix": "创建者 {author}",
+  "@creatorPrefix": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "language": "语言",
+  "languageSystem": "跟随系统",
+  "languageEnglish": "英文",
+  "languageChinese": "中文",
+  "languageKorean": "韩文",
+  "languageJapanese": "日文"
+}

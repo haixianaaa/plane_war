@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "navHome": "Home",
+  "navList": "List",
+  "navMe": "Me",
+  "discoverTitle": "Find",
+  "discoverCreate": "Create",
+  "discoverSearchHint": "Tap to search",
+  "creatorPrefix": "Creator {author}",
+  "@creatorPrefix": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "language": "Language",
+  "languageSystem": "System",
+  "languageEnglish": "English",
+  "languageChinese": "Chinese",
+  "languageKorean": "Korean",
+  "languageJapanese": "Japanese"
+}

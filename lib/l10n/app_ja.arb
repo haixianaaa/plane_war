@@ -1,0 +1,25 @@
+{
+  "@@locale": "ja",
+  "navHome": "ホーム",
+  "navList": "一覧",
+  "navMe": "マイ",
+  "discoverTitle": "Find",
+  "discoverCreate": "作成",
+  "discoverSearchHint": "検索",
+  "creatorPrefix": "作成者 {author}",
+  "@creatorPrefix": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "language": "言語",
+  "languageSystem": "システム",
+  "languageEnglish": "英語",
+  "languageChinese": "中国語",
+  "languageKorean": "韓国語",
+  "languageJapanese": "日本語"
+}
+
+

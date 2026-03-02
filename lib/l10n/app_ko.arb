@@ -1,0 +1,25 @@
+{
+  "@@locale": "ko",
+  "navHome": "홈",
+  "navList": "목록",
+  "navMe": "내 정보",
+  "discoverTitle": "Find",
+  "discoverCreate": "만들기",
+  "discoverSearchHint": "검색",
+  "creatorPrefix": "제작자 {author}",
+  "@creatorPrefix": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "language": "언어",
+  "languageSystem": "시스템",
+  "languageEnglish": "영어",
+  "languageChinese": "중국어",
+  "languageKorean": "한국어",
+  "languageJapanese": "일본어"
+}
+
+
