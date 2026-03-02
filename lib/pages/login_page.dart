@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_2/app/platform_info.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/widgets/app_frosted_gradient_pill_button.dart';
 
 typedef LoginAction = Future<void> Function();
 
@@ -36,19 +38,28 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _agreed = true;
-  bool _loading = false;
+  bool _running = false;
+
+  static const _systemUiStyle = SystemUiOverlayStyle(
+    // Android 系统底部导航栏：无法显示渐变，只能给一个更接近底部渐变的纯色
+    systemNavigationBarColor: Color(0xFFF5EDFF),
+    systemNavigationBarIconBrightness: Brightness.dark,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
+  );
 
   Future<void> _run(LoginAction? action) async {
-    if (!_agreed || _loading) return;
+    if (!_agreed || _running) return;
     if (action == null) {
       // TODO: 在这里接入真实 API（例如调用你的 AuthService）
       return;
     }
-    setState(() => _loading = true);
+    _running = true;
     try {
       await action();
     } finally {
-      if (mounted) setState(() => _loading = false);
+      _running = false;
     }
   }
 
@@ -57,156 +68,90 @@ class _LoginPageState extends State<LoginPage> {
     final t = AppLocalizations.of(context);
     final isIOS = PlatformInfo.isIOS;
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFEAF5FF),
-              Color(0xFFF5EDFF),
-            ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: _systemUiStyle,
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFEAF5FF),
+                Color(0xFFF5EDFF),
+              ],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(height: 26),
-                Text(
-                  t.loginTitle,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF2B2B2B),
-                  ),
-                ),
-                const SizedBox(height: 28),
-                Expanded(
-                  child: Center(
-                    child: _BunnyPlaceholder(
-                      size: 160,
-                      tint: const Color(0xFFB38CFF),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  Text(
+                    t.loginTitle,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      color: Color(0xFF2B2B2B),
+                      height: 1.1,
                     ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                _GradientPillButton(
-                  leading: isIOS
-                      ? const Icon(Icons.apple, color: Colors.white, size: 22)
-                      : _GoogleGIcon(),
-                  text: isIOS ? t.loginWithApple : t.loginWithGoogle,
-                  onTap: _agreed
-                      ? () => _run(isIOS ? widget.onAppleSignIn : widget.onGoogleSignIn)
-                      : null,
-                  loading: _loading,
-                ),
-                const SizedBox(height: 14),
-                _GradientPillButton(
-                  leading: const Icon(Icons.mail_outline_rounded,
-                      color: Colors.white, size: 22),
-                  text: t.loginWithEmail,
-                  onTap: _agreed ? () => _run(widget.onEmailLogin) : null,
-                  loading: _loading,
-                ),
-                const SizedBox(height: 18),
-                _AgreementRow(
-                  agreed: _agreed,
-                  textPrefix: t.loginAgreePrefix,
-                  termsText: t.loginTerms,
-                  privacyText: t.loginPrivacy,
-                  onChanged: (v) => setState(() => _agreed = v),
-                  onOpenTerms: widget.onOpenTerms,
-                  onOpenPrivacy: widget.onOpenPrivacy,
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GradientPillButton extends StatelessWidget {
-  const _GradientPillButton({
-    required this.leading,
-    required this.text,
-    required this.onTap,
-    required this.loading,
-  });
-
-  final Widget leading;
-  final String text;
-  final VoidCallback? onTap;
-  final bool loading;
-
-  @override
-  Widget build(BuildContext context) {
-    final disabled = onTap == null || loading;
-    final opacity = disabled ? 0.55 : 1.0;
-
-    return Opacity(
-      opacity: opacity,
-      child: GestureDetector(
-        onTap: disabled ? null : onTap,
-        child: Container(
-          height: 54,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFFB78CFF),
-                Color(0xFFA86CFF),
-              ],
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x1A8D5CF6),
-                blurRadius: 18,
-                offset: Offset(0, 10),
-              ),
-            ],
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Positioned.fill(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    leading,
-                    const SizedBox(width: 10),
-                    Text(
-                      text,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                  const SizedBox(height: 18),
+                  Expanded(
+                    child: Align(
+                      alignment: const Alignment(0, -0.38),
+                      child: _BunnyPlaceholder(
+                        size: 150,
+                        tint: const Color(0xFFB38CFF),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              if (loading)
-                const Positioned(
-                  right: 16,
-                  child: SizedBox(
-                    height: 18,
-                    width: 18,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: AppFrostedGradientPillButton(
+                      leading: isIOS
+                          ? const Icon(Icons.apple, color: Colors.white, size: 22)
+                          : _GoogleGIcon(),
+                      text: isIOS ? t.loginWithApple : t.loginWithGoogle,
+                      onTap: _agreed
+                          ? () => _run(
+                                isIOS
+                                    ? widget.onAppleSignIn
+                                    : widget.onGoogleSignIn,
+                              )
+                          : null,
                     ),
                   ),
-                ),
-            ],
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: AppFrostedGradientPillButton(
+                      leading: const Icon(
+                        Icons.mail_outline_rounded,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      text: t.loginWithEmail,
+                      onTap: _agreed ? () => _run(widget.onEmailLogin) : null,
+                    ),
+                  ),
+                  const Spacer(),
+                  _AgreementRow(
+                    agreed: _agreed,
+                    textPrefix: t.loginAgreePrefix,
+                    termsText: t.loginTerms,
+                    privacyText: t.loginPrivacy,
+                    onChanged: (v) => setState(() => _agreed = v),
+                    onOpenTerms: widget.onOpenTerms,
+                    onOpenPrivacy: widget.onOpenPrivacy,
+                  ),
+                  const SizedBox(height: 50),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -235,43 +180,41 @@ class _AgreementRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseStyle = const TextStyle(fontSize: 12, color: Color(0xFF8A8A8A));
-    final linkStyle =
-        baseStyle.copyWith(color: const Color(0xFF8D5CF6), height: 1.2);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: () => onChanged(!agreed),
-          child: Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: agreed ? const Color(0xFFB78CFF) : const Color(0xFFE9E9E9),
-              borderRadius: BorderRadius.circular(6),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              height: 22,
+              width: 22,
+              decoration: BoxDecoration(
+                color: agreed ? const Color(0xFF8D5CF6) : const Color(0xFFE0E0E0),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: agreed
+                  ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                  : null,
             ),
-            child: agreed
-                ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
-                : null,
           ),
         ),
-        const SizedBox(width: 10),
         Expanded(
           child: Text.rich(
             TextSpan(
-              style: baseStyle,
+              style: const TextStyle(fontSize: 10, color: Color(0xFF8A8A8A)),
               children: [
                 TextSpan(text: textPrefix),
                 TextSpan(
                   text: termsText,
-                  style: linkStyle,
+                  style: const TextStyle(fontSize: 10, color: Color(0xFF8D5CF6)),
                   recognizer: TapGestureRecognizer()..onTap = onOpenTerms,
                 ),
-                const TextSpan(text: ' '),
+                const TextSpan(text: ' 和 '),
                 TextSpan(
                   text: privacyText,
-                  style: linkStyle,
+                  style: const TextStyle(fontSize: 10, color: Color(0xFF8D5CF6)),
                   recognizer: TapGestureRecognizer()..onTap = onOpenPrivacy,
                 ),
               ],
@@ -296,11 +239,18 @@ class _BunnyPlaceholder extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.6),
+        color: Colors.white.withValues(alpha: 0.35),
         shape: BoxShape.circle,
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x1A9A62F8),
+            blurRadius: 30,
+            offset: Offset(0, 18),
+          )
+        ],
       ),
       child: Center(
-        child: Icon(Icons.cruelty_free_rounded, size: size * 0.55, color: tint),
+        child: Icon(Icons.cruelty_free_rounded, size: size * 0.6, color: tint),
       ),
     );
   }

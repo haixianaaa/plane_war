@@ -50,23 +50,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageJapanese => 'Japanese';
 
   @override
-  String get loginTitle => 'Login';
+  String get loginTitle => 'Log in';
 
   @override
-  String get loginWithApple => 'Sign in with Apple';
+  String get loginWithApple => 'Continue with Apple';
 
   @override
-  String get loginWithGoogle => 'Sign in with Google';
+  String get loginWithGoogle => 'Continue with Google';
 
   @override
-  String get loginWithEmail => 'Sign in with Email';
+  String get loginWithEmail => 'Continue with Email';
 
   @override
-  String get loginAgreePrefix => 'By continuing you agree to the ';
+  String get loginAgreePrefix => 'By continuing, you agree to OPPAYA\'s ';
 
   @override
   String get loginTerms => 'Terms of Service';
 
   @override
   String get loginPrivacy => 'Privacy Policy';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get logoutConfirmTitle => 'Log out';
+
+  @override
+  String get logoutConfirmMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get confirm => 'Confirm';
 }

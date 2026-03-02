@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/app/auth_controller.dart';
 import 'package:flutter_application_2/app/locale_controller.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 
@@ -9,6 +10,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final controller = LocaleScope.of(context);
+    final auth = AuthScope.of(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -57,6 +59,41 @@ class ProfilePage extends StatelessWidget {
               title: t.languageJapanese,
               selected: controller.locale?.languageCode == 'ja',
               onTap: () => controller.setLocale(const Locale('ja')),
+            ),
+            const SizedBox(height: 12),
+            const Divider(height: 1),
+            const SizedBox(height: 8),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                t.logout,
+                style: const TextStyle(color: Color(0xFFD94C4C)),
+              ),
+              onTap: () async {
+                final ok = await showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(t.logoutConfirmTitle),
+                      content: Text(t.logoutConfirmMessage),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text(t.cancel),
+                        ),
+                        FilledButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text(t.confirm),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                if (ok == true) {
+                  // TODO: 若后续需要通知后端登出/清 token，在这里调用你的 AuthService.signOut()
+                  auth.signOut();
+                }
+              },
             ),
           ],
         ),

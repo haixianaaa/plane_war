@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_application_2/pages/discover_page.dart';
-import 'package:flutter_application_2/pages/home_page.dart';
-import 'package:flutter_application_2/pages/profile_page.dart';
+import 'package:flutter_application_2/app/auth_controller.dart';
 import 'package:flutter_application_2/app/locale_controller.dart';
+import 'package:flutter_application_2/pages/app_entry.dart';
 import 'package:flutter_application_2/widgets/global_tap_haptics.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/services/auth_service.dart';
 
 const _seedColor = Color(0xFF8D5CF6);
 const _navSelectedColor = Color(0xFF8D5CF6); // 更深一点的紫色（选中态）
 const _navGrey = Color(0xFF4F4F4F);
-const _navIconOffset = Offset(0, 3);
-const _navIconSize = 28.0;
-
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
   runApp(const MyApp());
 }
 
@@ -26,10 +19,9 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static final _localeController = LocaleController();
+  static final _authController = AuthController();
 
   static const _uiStyle = SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.white,
-    systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.light,
@@ -38,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = ColorScheme.fromSeed(seedColor: _seedColor);
+    final authService = AuthService();
     return LocaleScope(
       controller: _localeController,
       child: AnimatedBuilder(
@@ -71,18 +64,18 @@ class MyApp extends StatelessWidget {
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
                 indicatorColor: Colors.transparent, // 选中 icon 不要背景色
-                overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
                   // 去掉按下/聚焦等状态下的灰色叠层（你看到的“闪灰”就是它）
-                  if (states.contains(MaterialState.pressed) ||
-                      states.contains(MaterialState.focused) ||
-                      states.contains(MaterialState.hovered)) {
+                  if (states.contains(WidgetState.pressed) ||
+                      states.contains(WidgetState.focused) ||
+                      states.contains(WidgetState.hovered)) {
                     return Colors.transparent;
                   }
                   return null; // 其它状态用默认
                 }),
-                labelTextStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
                   (states) {
-                    final selected = states.contains(MaterialState.selected);
+                    final selected = states.contains(WidgetState.selected);
                     return TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 13,
@@ -92,80 +85,17 @@ class MyApp extends StatelessWidget {
                     );
                   },
                 ),
-                iconTheme: const MaterialStatePropertyAll<IconThemeData>(
+                iconTheme: const WidgetStatePropertyAll<IconThemeData>(
                   IconThemeData(color: _navGrey),
                 ),
               ),
             ),
-            home: const RootPage(),
+            home: AuthScope(
+              controller: _authController,
+              child: AppEntry(authService: authService),
+            ),
           );
         },
-      ),
-    );
-  }
-}
-
-class RootPage extends StatefulWidget {
-  const RootPage({super.key});
-
-  @override
-  State<RootPage> createState() => _RootPageState();
-}
-
-class _RootPageState extends State<RootPage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = const [
-    HomePage(),
-    DiscoverPage(),
-    ProfilePage(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-    return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _pages),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() => _currentIndex = index);
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.home_outlined, size: _navIconSize),
-            ),
-            selectedIcon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.home, size: _navIconSize),
-            ),
-            label: t.navHome,
-          ),
-          NavigationDestination(
-            icon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.grid_view_outlined, size: _navIconSize),
-            ),
-            selectedIcon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.grid_view_rounded, size: _navIconSize),
-            ),
-            label: t.navList,
-          ),
-          NavigationDestination(
-            icon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.person_outline, size: _navIconSize),
-            ),
-            selectedIcon: Transform.translate(
-              offset: _navIconOffset,
-              child: Icon(Icons.person, size: _navIconSize),
-            ),
-            label: t.navMe,
-          ),
-        ],
       ),
     );
   }

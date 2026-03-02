@@ -19,5 +19,17 @@
   "languageEnglish": "英文",
   "languageChinese": "中文",
   "languageKorean": "韩文",
-  "languageJapanese": "日文"
+  "languageJapanese": "日文",
+  "loginTitle": "登录",
+  "loginWithApple": "通过苹果账号登录",
+  "loginWithGoogle": "通过谷歌账号登录",
+  "loginWithEmail": "使用邮箱登录",
+  "loginAgreePrefix": "继续使用即表示您同意 Aura 的以下条款 ",
+  "loginTerms": "服务条款",
+  "loginPrivacy": "隐私政策",
+  "logout": "退出登录",
+  "logoutConfirmTitle": "退出登录",
+  "logoutConfirmMessage": "确定要退出登录吗？",
+  "cancel": "取消",
+  "confirm": "确定"
 }

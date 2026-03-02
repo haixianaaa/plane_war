@@ -19,5 +19,17 @@
   "languageEnglish": "English",
   "languageChinese": "Chinese",
   "languageKorean": "Korean",
-  "languageJapanese": "Japanese"
+  "languageJapanese": "Japanese",
+  "loginTitle": "Log in",
+  "loginWithApple": "Continue with Apple",
+  "loginWithGoogle": "Continue with Google",
+  "loginWithEmail": "Continue with Email",
+  "loginAgreePrefix": "By continuing, you agree to OPPAYA's ",
+  "loginTerms": "Terms of Service",
+  "loginPrivacy": "Privacy Policy",
+  "logout": "Log out",
+  "logoutConfirmTitle": "Log out",
+  "logoutConfirmMessage": "Are you sure you want to log out?",
+  "cancel": "Cancel",
+  "confirm": "Confirm"
 }

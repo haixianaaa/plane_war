@@ -183,31 +183,31 @@ abstract class AppLocalizations {
   /// No description provided for @loginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
+  /// **'Log in'**
   String get loginTitle;
 
   /// No description provided for @loginWithApple.
   ///
   /// In en, this message translates to:
-  /// **'Sign in with Apple'**
+  /// **'Continue with Apple'**
   String get loginWithApple;
 
   /// No description provided for @loginWithGoogle.
   ///
   /// In en, this message translates to:
-  /// **'Sign in with Google'**
+  /// **'Continue with Google'**
   String get loginWithGoogle;
 
   /// No description provided for @loginWithEmail.
   ///
   /// In en, this message translates to:
-  /// **'Sign in with Email'**
+  /// **'Continue with Email'**
   String get loginWithEmail;
 
   /// No description provided for @loginAgreePrefix.
   ///
   /// In en, this message translates to:
-  /// **'By continuing you agree to the '**
+  /// **'By continuing, you agree to Aura\'s '**
   String get loginAgreePrefix;
 
   /// No description provided for @loginTerms.
@@ -221,6 +221,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get loginPrivacy;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logout;
+
+  /// No description provided for @logoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logoutConfirmTitle;
+
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get logoutConfirmMessage;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
 }
 
 class _AppLocalizationsDelegate

@@ -19,7 +19,19 @@
   "languageEnglish": "英語",
   "languageChinese": "中国語",
   "languageKorean": "韓国語",
-  "languageJapanese": "日本語"
+  "languageJapanese": "日本語",
+  "loginTitle": "ログイン",
+  "loginWithApple": "Appleでログイン",
+  "loginWithGoogle": "Googleでログイン",
+  "loginWithEmail": "メールでログイン",
+  "loginAgreePrefix": "続行すると、OPPAYAの",
+  "loginTerms": "利用規約",
+  "loginPrivacy": "プライバシーポリシー",
+  "logout": "ログアウト",
+  "logoutConfirmTitle": "ログアウト",
+  "logoutConfirmMessage": "ログアウトしますか？",
+  "cancel": "キャンセル",
+  "confirm": "確認"
 }
 
 

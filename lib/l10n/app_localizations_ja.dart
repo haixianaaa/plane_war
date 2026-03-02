@@ -62,11 +62,26 @@ class AppLocalizationsJa extends AppLocalizations {
   String get loginWithEmail => 'メールでログイン';
 
   @override
-  String get loginAgreePrefix => '続行すると、次に同意したものとみなされます：';
+  String get loginAgreePrefix => '続行すると、OPPAYAの';
 
   @override
   String get loginTerms => '利用規約';
 
   @override
   String get loginPrivacy => 'プライバシーポリシー';
+
+  @override
+  String get logout => 'ログアウト';
+
+  @override
+  String get logoutConfirmTitle => 'ログアウト';
+
+  @override
+  String get logoutConfirmMessage => 'ログアウトしますか？';
+
+  @override
+  String get cancel => 'キャンセル';
+
+  @override
+  String get confirm => '確認';
 }

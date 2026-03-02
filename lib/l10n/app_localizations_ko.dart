@@ -62,11 +62,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loginWithEmail => '이메일로 로그인';
 
   @override
-  String get loginAgreePrefix => '계속하면 다음에 동의합니다: ';
+  String get loginAgreePrefix => '계속하면 OPPAYA의 ';
 
   @override
   String get loginTerms => '서비스 약관';
 
   @override
   String get loginPrivacy => '개인정보 처리방침';
+
+  @override
+  String get logout => '로그아웃';
+
+  @override
+  String get logoutConfirmTitle => '로그아웃';
+
+  @override
+  String get logoutConfirmMessage => '로그아웃하시겠습니까?';
+
+  @override
+  String get cancel => '취소';
+
+  @override
+  String get confirm => '확인';
 }

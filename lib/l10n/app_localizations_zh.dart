@@ -62,11 +62,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get loginWithEmail => '使用邮箱登录';
 
   @override
-  String get loginAgreePrefix => '继续使用即表示您同意 ';
+  String get loginAgreePrefix => '继续使用即表示您同意 Aura 的以下条款 ';
 
   @override
   String get loginTerms => '服务条款';
 
   @override
   String get loginPrivacy => '隐私政策';
+
+  @override
+  String get logout => '退出登录';
+
+  @override
+  String get logoutConfirmTitle => '退出登录';
+
+  @override
+  String get logoutConfirmMessage => '确定要退出登录吗？';
+
+  @override
+  String get cancel => '取消';
+
+  @override
+  String get confirm => '确定';
 }
