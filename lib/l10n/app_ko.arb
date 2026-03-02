@@ -24,7 +24,7 @@
   "loginWithApple": "Apple로 로그인",
   "loginWithGoogle": "Google로 로그인",
   "loginWithEmail": "이메일로 로그인",
-  "loginAgreePrefix": "계속하면 OPPAYA의 ",
+  "loginAgreePrefix": "계속하면 Aura의 ",
   "loginTerms": "서비스 약관",
   "loginPrivacy": "개인정보 처리방침",
   "logout": "로그아웃",

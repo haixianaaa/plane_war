@@ -62,7 +62,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginWithEmail => 'Continue with Email';
 
   @override
-  String get loginAgreePrefix => 'By continuing, you agree to OPPAYA\'s ';
+  String get loginAgreePrefix => 'By continuing, you agree to Aura\'s ';
 
   @override
   String get loginTerms => 'Terms of Service';

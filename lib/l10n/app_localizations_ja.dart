@@ -62,7 +62,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get loginWithEmail => 'メールでログイン';
 
   @override
-  String get loginAgreePrefix => '続行すると、OPPAYAの';
+  String get loginAgreePrefix => '続行すると、Auraの';
 
   @override
   String get loginTerms => '利用規約';

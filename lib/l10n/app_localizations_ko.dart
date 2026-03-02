@@ -62,7 +62,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loginWithEmail => '이메일로 로그인';
 
   @override
-  String get loginAgreePrefix => '계속하면 OPPAYA의 ';
+  String get loginAgreePrefix => '계속하면 Aura의 ';
 
   @override
   String get loginTerms => '서비스 약관';
