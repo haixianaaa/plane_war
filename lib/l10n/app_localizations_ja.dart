@@ -12,7 +12,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get navHome => 'ホーム';
 
   @override
-  String get navList => '一覧';
+  String get navList => '発見';
 
   @override
   String get navMe => 'マイ';

@@ -111,7 +111,7 @@ abstract class AppLocalizations {
   /// No description provided for @navList.
   ///
   /// In en, this message translates to:
-  /// **'List'**
+  /// **'Discover'**
   String get navList;
 
   /// No description provided for @navMe.

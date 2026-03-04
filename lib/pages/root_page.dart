@@ -59,11 +59,11 @@ class _RootPageState extends State<RootPage> {
             NavigationDestination(
               icon: Transform.translate(
                 offset: _navIconOffset,
-                child: Icon(Icons.grid_view_outlined, size: _navIconSize),
+                child: Icon(Icons.search, size: _navIconSize),
               ),
               selectedIcon: Transform.translate(
                 offset: _navIconOffset,
-                child: Icon(Icons.grid_view_rounded, size: _navIconSize),
+                child: Icon(Icons.search_rounded, size: _navIconSize),
               ),
               label: t.navList,
             ),

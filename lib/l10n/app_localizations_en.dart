@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
-  String get navList => 'List';
+  String get navList => 'Discover';
 
   @override
   String get navMe => 'Me';

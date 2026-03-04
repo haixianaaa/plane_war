@@ -12,7 +12,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get navHome => '홈';
 
   @override
-  String get navList => '목록';
+  String get navList => '발견';
 
   @override
   String get navMe => '내 정보';
