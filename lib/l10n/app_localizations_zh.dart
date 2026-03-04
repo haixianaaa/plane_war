@@ -84,4 +84,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get confirm => '确定';
+
+  @override
+  String get ok => '好';
+
+  @override
+  String get loginNeedAgreeMessage => '请在登录前同意服务条款和隐私政策。';
 }

@@ -84,4 +84,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get confirm => '確認';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get loginNeedAgreeMessage => 'ログインする前に利用規約とプライバシーポリシーに同意してください。';
 }

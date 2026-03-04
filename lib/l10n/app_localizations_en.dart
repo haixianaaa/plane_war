@@ -84,4 +84,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get loginNeedAgreeMessage =>
+      'Please agree to the Terms of Service and Privacy Policy before logging in.';
 }

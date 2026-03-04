@@ -31,5 +31,7 @@
   "logoutConfirmTitle": "Log out",
   "logoutConfirmMessage": "Are you sure you want to log out?",
   "cancel": "Cancel",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "ok": "OK",
+  "loginNeedAgreeMessage": "Please agree to the Terms of Service and Privacy Policy before logging in."
 }

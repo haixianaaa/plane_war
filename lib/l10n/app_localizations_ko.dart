@@ -84,4 +84,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get confirm => '확인';
+
+  @override
+  String get ok => '확인';
+
+  @override
+  String get loginNeedAgreeMessage => '로그인하기 전에 서비스 약관 및 개인정보 처리방침에 동의해 주세요.';
 }

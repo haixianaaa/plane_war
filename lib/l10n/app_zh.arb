@@ -31,5 +31,7 @@
   "logoutConfirmTitle": "退出登录",
   "logoutConfirmMessage": "确定要退出登录吗？",
   "cancel": "取消",
-  "confirm": "确定"
+  "confirm": "确定",
+  "ok": "好",
+  "loginNeedAgreeMessage": "请在登录前同意服务条款和隐私政策。"
 }

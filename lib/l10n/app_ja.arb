@@ -31,7 +31,9 @@
   "logoutConfirmTitle": "ログアウト",
   "logoutConfirmMessage": "ログアウトしますか？",
   "cancel": "キャンセル",
-  "confirm": "確認"
+  "confirm": "確認",
+  "ok": "OK",
+  "loginNeedAgreeMessage": "ログインする前に利用規約とプライバシーポリシーに同意してください。"
 }
 
 

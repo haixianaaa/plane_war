@@ -251,6 +251,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @loginNeedAgreeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please agree to the Terms of Service and Privacy Policy before logging in.'**
+  String get loginNeedAgreeMessage;
 }
 
 class _AppLocalizationsDelegate

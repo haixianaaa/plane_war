@@ -31,7 +31,9 @@
   "logoutConfirmTitle": "로그아웃",
   "logoutConfirmMessage": "로그아웃하시겠습니까?",
   "cancel": "취소",
-  "confirm": "확인"
+  "confirm": "확인",
+  "ok": "확인",
+  "loginNeedAgreeMessage": "로그인하기 전에 서비스 약관 및 개인정보 처리방침에 동의해 주세요."
 }
 
 

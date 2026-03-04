@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_application_2/app/platform_info.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
-import 'package:flutter_application_2/widgets/app_frosted_gradient_pill_button.dart';
+import 'package:flutter_application_2/widgets/app_dialog.dart';
+import 'package:flutter_application_2/widgets/app_button.dart';
 
 typedef LoginAction = Future<void> Function();
 
@@ -50,7 +52,22 @@ class _LoginPageState extends State<LoginPage> {
   );
 
   Future<void> _run(LoginAction? action) async {
-    if (!_agreed || _running) return;
+    if (_running) return;
+    if (!_agreed) {
+      await showAppDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        message: AppLocalizations.of(context).loginNeedAgreeMessage,
+        actions: [
+          AppDialogAction<void>(
+            text: AppLocalizations.of(context).ok,
+            result: null,
+            type: AppDialogActionType.primaryGradient,
+          ),
+        ],
+      );
+      return;
+    }
     if (action == null) {
       // TODO: 在这里接入真实 API（例如调用你的 AuthService）
       return;
@@ -114,15 +131,11 @@ class _LoginPageState extends State<LoginPage> {
                     child: AppFrostedGradientPillButton(
                       leading: isIOS
                           ? const Icon(Icons.apple, color: Colors.white, size: 22)
-                          : _GoogleGIcon(),
+                          : const _GoogleIconSvg(),
                       text: isIOS ? t.loginWithApple : t.loginWithGoogle,
-                      onTap: _agreed
-                          ? () => _run(
-                                isIOS
-                                    ? widget.onAppleSignIn
-                                    : widget.onGoogleSignIn,
-                              )
-                          : null,
+                      onTap: () => _run(
+                        isIOS ? widget.onAppleSignIn : widget.onGoogleSignIn,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 25),
@@ -130,12 +143,12 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AppFrostedGradientPillButton(
                       leading: const Icon(
-                        Icons.mail_outline_rounded,
+                        Icons.mail,
                         color: Colors.white,
-                        size: 22,
+                        size: 24,
                       ),
                       text: t.loginWithEmail,
-                      onTap: _agreed ? () => _run(widget.onEmailLogin) : null,
+                      onTap: () => _run(widget.onEmailLogin),
                     ),
                   ),
                   const Spacer(),
@@ -256,26 +269,16 @@ class _BunnyPlaceholder extends StatelessWidget {
   }
 }
 
-class _GoogleGIcon extends StatelessWidget {
+class _GoogleIconSvg extends StatelessWidget {
+  const _GoogleIconSvg();
+
   @override
   Widget build(BuildContext context) {
-    // 避免引入第三方 icon 包；这里先用“G”做占位，后续接入 Google 登录时可换成官方 logo asset/svg
-    return Container(
-      height: 22,
-      width: 22,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.18),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: const Text(
-        'G',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+    return SvgPicture.asset(
+      'assets/icons/google.svg',
+      width: 24,
+      height: 24,
+      // colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
     );
   }
 }

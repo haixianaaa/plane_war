@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/app/auth_controller.dart';
 import 'package:flutter_application_2/app/locale_controller.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/widgets/app_dialog.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -70,24 +71,22 @@ class ProfilePage extends StatelessWidget {
                 style: const TextStyle(color: Color(0xFFD94C4C)),
               ),
               onTap: () async {
-                final ok = await showDialog<bool>(
+                final ok = await showAppDialog<bool>(
                   context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(t.logoutConfirmTitle),
-                      content: Text(t.logoutConfirmMessage),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: Text(t.cancel),
-                        ),
-                        FilledButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: Text(t.confirm),
-                        ),
-                      ],
-                    );
-                  },
+                  barrierDismissible: true,
+                  message: t.logoutConfirmMessage,
+                  actions: [
+                    AppDialogAction<bool>(
+                      text: t.cancel,
+                      result: false,
+                      type: AppDialogActionType.primaryGradient, // 截图：取消是渐变实心
+                    ),
+                    AppDialogAction<bool>(
+                      text: t.confirm,
+                      result: true,
+                      type: AppDialogActionType.outline, // 截图：确认是白底紫边
+                    ),
+                  ],
                 );
                 if (ok == true) {
                   // TODO: 若后续需要通知后端登出/清 token，在这里调用你的 AuthService.signOut()
