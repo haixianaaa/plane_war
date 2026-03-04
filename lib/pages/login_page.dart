@@ -6,6 +6,7 @@ import 'package:flutter_application_2/app/platform_info.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/widgets/app_dialog.dart';
 import 'package:flutter_application_2/widgets/app_button.dart';
+import 'package:flutter_application_2/theme/app_theme.dart';
 
 typedef LoginAction = Future<void> Function();
 
@@ -128,8 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: AppFrostedGradientPillButton(
-                      leading: isIOS
+                    child: AppButton(
+                      type: AppButtonType.primary,
+                      icon: isIOS
                           ? const Icon(Icons.apple, color: Colors.white, size: 22)
                           : const _GoogleIconSvg(),
                       text: isIOS ? t.loginWithApple : t.loginWithGoogle,
@@ -141,12 +143,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 25),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: AppFrostedGradientPillButton(
-                      leading: const Icon(
-                        Icons.mail,
-                        color: Colors.white,
-                        size: 24,
-                      ),
+                    child: AppButton(
+                      type: AppButtonType.primary,
+                      icon: const Icon(Icons.mail, color: Colors.white, size: 24),
                       text: t.loginWithEmail,
                       onTap: () => _run(widget.onEmailLogin),
                     ),
@@ -193,6 +192,7 @@ class _AgreementRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = AppBrandTheme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -204,7 +204,7 @@ class _AgreementRow extends StatelessWidget {
               height: 22,
               width: 22,
               decoration: BoxDecoration(
-                color: agreed ? const Color(0xFF8D5CF6) : const Color(0xFFE0E0E0),
+                color: agreed ? brand.seedColor : const Color(0xFFE0E0E0),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: agreed
@@ -221,13 +221,13 @@ class _AgreementRow extends StatelessWidget {
                 TextSpan(text: textPrefix),
                 TextSpan(
                   text: termsText,
-                  style: const TextStyle(fontSize: 10, color: Color(0xFF8D5CF6)),
+                  style: TextStyle(fontSize: 10, color: brand.seedColor),
                   recognizer: TapGestureRecognizer()..onTap = onOpenTerms,
                 ),
                 const TextSpan(text: ' 和 '),
                 TextSpan(
                   text: privacyText,
-                  style: const TextStyle(fontSize: 10, color: Color(0xFF8D5CF6)),
+                  style: TextStyle(fontSize: 10, color: brand.seedColor),
                   recognizer: TapGestureRecognizer()..onTap = onOpenPrivacy,
                 ),
               ],

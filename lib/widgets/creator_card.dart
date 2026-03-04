@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_2/models/creator_card_data.dart';
 import 'package:flutter_application_2/widgets/global_tap_haptics.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/theme/app_theme.dart';
 
 class CreatorCard extends StatefulWidget {
   const CreatorCard({super.key, required this.item});
@@ -30,6 +31,7 @@ class _CreatorCardState extends State<CreatorCard> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final brand = AppBrandTheme.of(context);
     return AnimatedScale(
       scale: _pressed ? 0.96 : 1,
       duration: const Duration(milliseconds: 120),
@@ -67,7 +69,7 @@ class _CreatorCardState extends State<CreatorCard> {
                           color: Colors.white.withValues(alpha: 0.75),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.flag, color: Color(0xFF9A62F8)),
+                        child: Icon(Icons.flag, color: brand.accentColor),
                       ),
                     ),
                   ],

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/theme/app_theme.dart';
 
 /// Unified app button variants.
 ///
@@ -119,19 +120,11 @@ class AppButton extends StatelessWidget {
   /// they will override the corresponding fields in this style.
   final AppFrostedGradientPillButtonStyle? primaryStyle;
 
-  static const _defaultOutlineAccent = Color(0xFF9A62F8);
-
   static const TextStyle _defaultPrimaryTextStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w400,
     color: Colors.white,
     height: 1.1,
-  );
-
-  static const TextStyle _defaultOutlineTextStyle = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w300,
-    color: _defaultOutlineAccent,
   );
 
   TextStyle _resolveTextStyle(TextStyle base) {
@@ -144,19 +137,26 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = AppBrandTheme.of(context);
     final resolvedWidth = width ?? double.infinity;
 
     return SizedBox(
       width: resolvedWidth,
       child: switch (type) {
-        AppButtonType.primary => _buildPrimary(),
-        AppButtonType.outline => _buildOutline(),
+        AppButtonType.primary => _buildPrimary(context, brand),
+        AppButtonType.outline => _buildOutline(brand),
       },
     );
   }
 
-  Widget _buildPrimary() {
-    final baseStyle = primaryStyle ?? const AppFrostedGradientPillButtonStyle();
+  Widget _buildPrimary(BuildContext context, AppBrandTheme brand) {
+    final baseStyle = primaryStyle ??
+        AppFrostedGradientPillButtonStyle(
+          blurSigma: brand.primaryButtonBlurSigma,
+          backgroundGradient: brand.primaryButtonGradient,
+          shadows: brand.primaryButtonShadows,
+          highlightOverlayGradient: brand.primaryButtonHighlightOverlayGradient,
+        );
     final resolvedStyle = (height != null || radius != null)
         ? AppFrostedGradientPillButtonStyle(
             height: height ?? baseStyle.height,
@@ -186,9 +186,15 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  Widget _buildOutline() {
+  Widget _buildOutline(AppBrandTheme brand) {
     final resolvedHeight = height ?? 50;
     final resolvedRadius = radius ?? 30;
+    final accent = brand.accentColor;
+    final outlineBaseTextStyle = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w300,
+      color: accent,
+    );
 
     return _OutlinePillButton(
       text: text,
@@ -197,8 +203,8 @@ class AppButton extends StatelessWidget {
       iconTextSpacing: iconTextSpacing,
       height: resolvedHeight,
       radius: resolvedRadius,
-      accentColor: _defaultOutlineAccent,
-      textStyle: _resolveTextStyle(_defaultOutlineTextStyle),
+      accentColor: accent,
+      textStyle: _resolveTextStyle(outlineBaseTextStyle),
       enableTapScale: enableTapScale,
       pressedScale: pressedScale,
       scaleDuration: scaleDuration,

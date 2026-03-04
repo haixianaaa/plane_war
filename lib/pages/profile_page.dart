@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/app/auth_controller.dart';
 import 'package:flutter_application_2/app/locale_controller.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/theme/app_theme.dart';
 import 'package:flutter_application_2/widgets/app_dialog.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -114,11 +115,12 @@ class _LocaleOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = AppBrandTheme.of(context);
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(title),
       trailing: selected
-          ? const Icon(Icons.check_rounded, color: Color(0xFF8D5CF6))
+          ? Icon(Icons.check_rounded, color: brand.seedColor)
           : null,
       onTap: onTap,
     );

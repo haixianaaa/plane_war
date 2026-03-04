@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/models/creator_card_data.dart';
 import 'package:flutter_application_2/widgets/creator_card.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/theme/app_theme.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -115,6 +116,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final brand = AppBrandTheme.of(context);
     final items = _filteredItems;
     return Container(
       decoration: const BoxDecoration(
@@ -143,7 +145,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   const Spacer(),
                   FilledButton(
                     style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF9A62F8),
+                      backgroundColor: brand.accentColor,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 10,
@@ -189,9 +191,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       color: Color(0xFFB7B7B7),
                       fontSize: 14,
                     ),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.search_rounded,
-                      color: Color(0xFF9A62F8),
+                      color: brand.accentColor,
                       size: 24,
                     ),
                     prefixIconConstraints:
@@ -269,7 +271,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       shape: StadiumBorder(
                         side: BorderSide(
                           color: selected
-                              ? const Color(0xFF9A62F8)
+                              ? brand.accentColor
                               : Colors.transparent,
                           width: 2,
                         ),
