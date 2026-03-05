@@ -64,6 +64,12 @@ flutter:
 
   assets:
     - assets/icons/
+    - assets/fonts/
+
+  fonts:
+    - family: RemixIcon
+      fonts:
+        - asset: assets/fonts/remixicon.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

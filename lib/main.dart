@@ -33,28 +33,28 @@ class MyApp extends StatelessWidget {
       child: AnimatedBuilder(
         animation: _localeController,
         builder: (context, _) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Find App',
-            locale: _localeController.locale,
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            builder: (context, child) {
-              if (child == null) return const SizedBox.shrink();
-              return AnnotatedRegion<SystemUiOverlayStyle>(
-                value: _uiStyle,
-                child: GlobalTapHaptics(child: child),
-              );
-            },
-            theme: AppTheme.light(),
-            home: AuthScope(
-              controller: _authController,
-              child: AppEntry(authService: authService),
+          return AuthScope(
+            controller: _authController,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Find App',
+              locale: _localeController.locale,
+              supportedLocales: AppLocalizations.supportedLocales,
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              builder: (context, child) {
+                if (child == null) return const SizedBox.shrink();
+                return AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: _uiStyle,
+                  child: GlobalTapHaptics(enabled: false, child: child),
+                );
+              },
+              theme: AppTheme.light(),
+              home: AppEntry(authService: authService),
             ),
           );
         },

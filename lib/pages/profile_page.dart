@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/app/auth_controller.dart';
-import 'package:flutter_application_2/app/locale_controller.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
-import 'package:flutter_application_2/widgets/app_dialog.dart';
+import 'package:flutter_application_2/pages/settings_page.dart';
+import 'package:flutter_application_2/icons/remix_icons.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -11,118 +10,243 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final controller = LocaleScope.of(context);
-    final auth = AuthScope.of(context);
+    final brand = AppBrandTheme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          children: [
-            Text(
-              t.navMe,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              t.language,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF4F4F4F),
-              ),
-            ),
-            const SizedBox(height: 8),
-            _LocaleOption(
-              title: t.languageSystem,
-              selected: controller.locale == null,
-              onTap: controller.setSystem,
-            ),
-            _LocaleOption(
-              title: t.languageEnglish,
-              selected: controller.locale?.languageCode == 'en',
-              onTap: () => controller.setLocale(const Locale('en')),
-            ),
-            _LocaleOption(
-              title: t.languageChinese,
-              selected: controller.locale?.languageCode == 'zh',
-              onTap: () => controller.setLocale(const Locale('zh')),
-            ),
-            _LocaleOption(
-              title: t.languageKorean,
-              selected: controller.locale?.languageCode == 'ko',
-              onTap: () => controller.setLocale(const Locale('ko')),
-            ),
-            _LocaleOption(
-              title: t.languageJapanese,
-              selected: controller.locale?.languageCode == 'ja',
-              onTap: () => controller.setLocale(const Locale('ja')),
-            ),
-            const SizedBox(height: 12),
-            const Divider(height: 1),
-            const SizedBox(height: 8),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                t.logout,
-                style: const TextStyle(color: Color(0xFFD94C4C)),
-              ),
-              onTap: () async {
-                final ok = await showAppDialog<bool>(
-                  context: context,
-                  barrierDismissible: true,
-                  message: t.logoutConfirmMessage,
-                  actions: [
-                    AppDialogAction<bool>(
-                      text: t.cancel,
-                      result: false,
-                      type: AppDialogActionType.primaryGradient, // 截图：取消是渐变实心
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF6EEFF),
+              Color(0xFFF8F7FF),
+              Colors.white,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      t.navMe,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF2B2B2B),
+                      ),
                     ),
-                    AppDialogAction<bool>(
-                      text: t.confirm,
-                      result: true,
-                      type: AppDialogActionType.outline, // 截图：确认是白底紫边
+                    const Spacer(),
+                    _CircleIconButton(
+                      icon: RemixIcons.settings3Line,
+                      iconSize: 24,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SettingsPage()),
+                        );
+                      },
                     ),
                   ],
-                );
-                if (ok == true) {
-                  // TODO: 若后续需要通知后端登出/清 token，在这里调用你的 AuthService.signOut()
-                  auth.signOut();
-                }
-              },
-            ),
-          ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 300,
+                        child: Stack(
+                          children: [
+                            // Soft decorative blobs
+                            Positioned(
+                              top: 10,
+                              left: -40,
+                              child: _GlowBlob(
+                                size: 180,
+                                color: brand.seedColor.withValues(alpha: 0.18),
+                              ),
+                            ),
+                            Positioned(
+                              top: 40,
+                              right: -60,
+                              child: _GlowBlob(
+                                size: 220,
+                                color: brand.accentColor.withValues(alpha: 0.14),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -40,
+                              left: 40,
+                              child: _GlowBlob(
+                                size: 260,
+                                color: const Color(0xFFFFFFFF).withValues(alpha: 0.35),
+                              ),
+                            ),
+
+                            // Profile card
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Container(
+                                  height: 86,
+                                  padding: const EdgeInsets.fromLTRB(16, 0, 12, 0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.92),
+                                    borderRadius: BorderRadius.circular(24),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x14000000),
+                                        blurRadius: 24,
+                                        offset: Offset(0, 10),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      _AvatarPlaceholder(
+                                        size: 62,
+                                        ringColor: brand.accentColor,
+                                      ),
+                                      const SizedBox(width: 14),
+                                      Expanded(
+                                        child: Text(
+                                          'ID: 91810537',
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xFF2B2B2B),
+                                          ),
+                                        ),
+                                      ),
+                                      _CircleIconButton(
+                                        icon: RemixIcons.edit2Line,
+                                        onTap: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // Bottom part placeholder (empty)
+                      const SizedBox(height: 26),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Container(
+                          height: 420,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.0),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _LocaleOption extends StatelessWidget {
-  const _LocaleOption({
-    required this.title,
-    required this.selected,
+class _CircleIconButton extends StatelessWidget {
+  const _CircleIconButton({
+    required this.icon,
     required this.onTap,
+    this.iconSize = 22,
   });
 
-  final String title;
-  final bool selected;
+  final IconData icon;
   final VoidCallback onTap;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
-    final brand = AppBrandTheme.of(context);
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(title),
-      trailing: selected
-          ? Icon(Icons.check_rounded, color: brand.seedColor)
-          : null,
-      onTap: onTap,
+    return Material(
+      color: Colors.white.withValues(alpha: 0.78),
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Icon(icon, size: iconSize, color: const Color(0xFF3A3A3A)),
+        ),
+      ),
+    );
+  }
+}
+
+class _AvatarPlaceholder extends StatelessWidget {
+  const _AvatarPlaceholder({required this.size, required this.ringColor});
+
+  final double size;
+  final Color ringColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        border: Border.all(color: ringColor.withValues(alpha: 0.35), width: 3),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x12000000),
+            blurRadius: 16,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Icon(
+          Icons.person_rounded,
+          size: size * 0.54,
+          color: ringColor.withValues(alpha: 0.75),
+        ),
+      ),
+    );
+  }
+}
+
+class _GlowBlob extends StatelessWidget {
+  const _GlowBlob({required this.size, required this.color});
+
+  final double size;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: size,
+      width: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            color: color,
+            blurRadius: 60,
+            spreadRadius: 10,
+          ),
+        ],
+      ),
     );
   }
 }
