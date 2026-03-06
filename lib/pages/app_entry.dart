@@ -7,6 +7,7 @@ import 'package:flutter_application_2/pages/root_page.dart';
 import 'package:flutter_application_2/services/auth_service.dart';
 import 'package:flutter_application_2/widgets/app_dialog.dart';
 import 'package:flutter_application_2/network/app_network.dart';
+import 'package:flutter_application_2/widgets/app_loading.dart';
 
 /// App 入口：先展示登录页，登录成功后进入主应用（底部导航）。
 ///
@@ -68,6 +69,7 @@ class _AppEntryState extends State<AppEntry> {
         auth.signIn();
       },
       onEmailLogin: () async {
+        unawaited(showAppLoading(context));
         try {
           await widget.authService.signInWithPassword(
             username: _demoUsername,
@@ -90,6 +92,8 @@ class _AppEntryState extends State<AppEntry> {
         } catch (e) {
           if (!context.mounted) return;
           await _showError(context, e);
+        } finally {
+          if (context.mounted) hideAppLoading(context);
         }
       },
       onOpenTerms: () {
