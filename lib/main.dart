@@ -3,13 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_application_2/app/auth_controller.dart';
 import 'package:flutter_application_2/app/locale_controller.dart';
+import 'package:flutter_application_2/network/app_network.dart';
 import 'package:flutter_application_2/pages/app_entry.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 import 'package:flutter_application_2/widgets/global_tap_haptics.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/services/auth_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppNetwork.init();
   runApp(const MyApp());
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter_application_2/app/locale_controller.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 import 'package:flutter_application_2/widgets/app_dialog.dart';
+import 'package:flutter_application_2/network/app_network.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -89,6 +90,7 @@ class SettingsPage extends StatelessWidget {
                 if (context.mounted) {
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 }
+                AppNetwork.tokenStore.clear();
                 auth.signOut();
               }
             },
