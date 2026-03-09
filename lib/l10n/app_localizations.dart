@@ -108,6 +108,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get navHome;
 
+  /// No description provided for @navChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get navChat;
+
   /// No description provided for @navList.
   ///
   /// In en, this message translates to:

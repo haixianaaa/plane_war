@@ -1,6 +1,7 @@
 {
   "@@locale": "ko",
   "navHome": "홈",
+  "navChat": "채팅",
   "navList": "발견",
   "navMe": "내 정보",
   "discoverTitle": "Find",

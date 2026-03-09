@@ -1,6 +1,7 @@
 {
   "@@locale": "zh",
   "navHome": "主页",
+  "navChat": "聊天",
   "navList": "发现",
   "navMe": "我的",
   "discoverTitle": "Find",

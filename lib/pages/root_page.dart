@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
+import 'package:flutter_application_2/pages/chat_page.dart';
 import 'package:flutter_application_2/pages/discover_page.dart';
 import 'package:flutter_application_2/pages/home_page.dart';
 import 'package:flutter_application_2/pages/profile_page.dart';
@@ -20,6 +21,7 @@ class _RootPageState extends State<RootPage> {
 
   final List<Widget> _pages = const [
     HomePage(),
+    ChatPage(),
     DiscoverPage(),
     ProfilePage(),
   ];
@@ -55,6 +57,17 @@ class _RootPageState extends State<RootPage> {
                 child: Icon(Icons.home, size: _navIconSize),
               ),
               label: t.navHome,
+            ),
+            NavigationDestination(
+              icon: Transform.translate(
+                offset: _navIconOffset,
+                child: Icon(Icons.chat_bubble_outline_rounded, size: _navIconSize),
+              ),
+              selectedIcon: Transform.translate(
+                offset: _navIconOffset,
+                child: Icon(Icons.chat_bubble_rounded, size: _navIconSize),
+              ),
+              label: t.navChat,
             ),
             NavigationDestination(
               icon: Transform.translate(

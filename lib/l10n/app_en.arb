@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "navHome": "Home",
+  "navChat": "Chat",
   "navList": "Discover",
   "navMe": "Me",
   "discoverTitle": "Find",

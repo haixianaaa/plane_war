@@ -31,15 +31,15 @@ class ProfilePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                 child: Row(
-                  children: [
-                    Text(
-                      t.navMe,
-                      style: const TextStyle(
+          children: [
+            Text(
+              t.navMe,
+              style: const TextStyle(
                         fontSize: 22,
-                        fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w700,
                         color: Color(0xFF2B2B2B),
-                      ),
-                    ),
+              ),
+            ),
                     const Spacer(),
                     _CircleIconButton(
                       icon: RemixIcons.settings3Line,
@@ -51,8 +51,8 @@ class ProfilePage extends StatelessWidget {
                       },
                     ),
                   ],
-                ),
               ),
+            ),
               const SizedBox(height: 18),
               Expanded(
                 child: SingleChildScrollView(
@@ -78,7 +78,7 @@ class ProfilePage extends StatelessWidget {
                                 size: 220,
                                 color: brand.accentColor.withValues(alpha: 0.14),
                               ),
-                            ),
+            ),
                             Positioned(
                               bottom: -40,
                               left: 40,
@@ -86,7 +86,7 @@ class ProfilePage extends StatelessWidget {
                                 size: 260,
                                 color: const Color(0xFFFFFFFF).withValues(alpha: 0.35),
                               ),
-                            ),
+            ),
 
                             // Profile card
                             Align(
@@ -122,7 +122,7 @@ class ProfilePage extends StatelessWidget {
                                             fontWeight: FontWeight.w400,
                                             color: Color(0xFF2B2B2B),
                                           ),
-                                        ),
+              ),
                                       ),
                                       _CircleIconButton(
                                         icon: RemixIcons.edit2Line,
@@ -154,8 +154,8 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-            ],
+            ),
+          ],
           ),
         ),
       ),
@@ -181,7 +181,7 @@ class _CircleIconButton extends StatelessWidget {
       shape: const CircleBorder(),
       child: InkWell(
         customBorder: const CircleBorder(),
-        onTap: onTap,
+      onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Icon(icon, size: iconSize, color: const Color(0xFF3A3A3A)),
