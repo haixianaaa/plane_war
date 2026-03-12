@@ -227,7 +227,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               ),
               const SizedBox(height: 16),
               SizedBox(
-                height: 48,
+                height: 38,
                 child: ListView.separated(
                   key: _tagListKey,
                   controller: _tagScrollController,
@@ -240,14 +240,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     return AppSquareIconButton(
                       key: _tagKeys[index],
                       backgroundColor: Colors.white.withValues(alpha: 0.9),
-                      borderRadius: BorderRadius.circular(999),
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: selected ? brand.accentColor : Colors.transparent,
                         width: 2,
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 12,
+                        vertical: 6,
                       ),
                       child: Text(
                         tag,
