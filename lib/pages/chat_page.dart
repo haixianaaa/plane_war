@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_application_2/icons/remix_icons.dart';
+import 'package:flutter_application_2/pages/chat_detail_page.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 
 class ChatPage extends StatelessWidget {
@@ -102,13 +103,26 @@ class ChatPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              child: _ChatRow(
-                                brand: brand,
-                                name: item.name,
-                                preview: item.preview,
-                                date: item.date,
-                                unread: item.unread,
-                                avatarSeed: item.avatarSeed,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute<void>(
+                                      builder: (_) => ChatDetailPage(
+                                        name: item.name,
+                                        avatarSeed: item.avatarSeed,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: _ChatRow(
+                                  brand: brand,
+                                  name: item.name,
+                                  preview: item.preview,
+                                  date: item.date,
+                                  unread: item.unread,
+                                  avatarSeed: item.avatarSeed,
+                                ),
                               ),
                             );
                           },
