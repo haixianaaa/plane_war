@@ -241,6 +241,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       key: _tagKeys[index],
                       backgroundColor: Colors.white.withValues(alpha: 0.9),
                       borderRadius: BorderRadius.circular(20),
+                      enableTapScale: false,
                       border: Border.all(
                         color: selected ? brand.accentColor : Colors.transparent,
                         width: 2,

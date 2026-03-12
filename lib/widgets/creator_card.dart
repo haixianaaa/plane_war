@@ -16,16 +16,42 @@ class CreatorCard extends StatefulWidget {
 
 class _CreatorCardState extends State<CreatorCard> {
   bool _pressed = false;
+  DateTime? _pressedAt;
+  static const _minPressedDuration = Duration(milliseconds: 80);
 
-  Future<void> _playTapFeedback() async {
+  void _setPressed(bool v) {
+    if (_pressed == v) return;
+    setState(() => _pressed = v);
+  }
+
+  void _handleTapDown() {
     if (HapticsScope.isEnabled(context)) {
       HapticFeedback.lightImpact();
     }
+    _pressedAt = DateTime.now();
+    _setPressed(true);
+  }
 
-    setState(() => _pressed = true);
-    await Future<void>.delayed(const Duration(milliseconds: 90));
-    if (!mounted) return;
-    setState(() => _pressed = false);
+  void _handleTapEnd() {
+    final pressedAt = _pressedAt;
+    _pressedAt = null;
+    if (pressedAt == null) {
+      _setPressed(false);
+      return;
+    }
+
+    final elapsed = DateTime.now().difference(pressedAt);
+    final remaining = _minPressedDuration - elapsed;
+    if (remaining <= Duration.zero) {
+      _setPressed(false);
+      return;
+    }
+
+    Future<void>.delayed(remaining, () {
+      if (!mounted) return;
+      if (_pressedAt != null) return; // pressed again
+      _setPressed(false);
+    });
   }
  
   @override
@@ -37,7 +63,11 @@ class _CreatorCardState extends State<CreatorCard> {
       duration: const Duration(milliseconds: 120),
       curve: Curves.easeOut,
       child: GestureDetector(
-        onTap: _playTapFeedback,
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => _handleTapDown(),
+        onTapUp: (_) => _handleTapEnd(),
+        onTapCancel: _handleTapEnd,
+        onTap: () {},
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,

@@ -349,7 +349,7 @@ class AppFrostedGradientPillButton extends StatefulWidget {
 
 /// Square icon button used across pages (extracted from chat list UI).
 @immutable
-class AppSquareIconButton extends StatelessWidget {
+class AppSquareIconButton extends StatefulWidget {
   const AppSquareIconButton({
     super.key,
     this.icon,
@@ -366,6 +366,11 @@ class AppSquareIconButton extends StatelessWidget {
     this.height,
     this.alignment = Alignment.center,
     this.hitTestBehavior = HitTestBehavior.opaque,
+    this.enableTapScale = true,
+    this.pressedScale = 0.96,
+    this.scaleDuration = const Duration(milliseconds: 120),
+    this.scaleCurve = Curves.easeOut,
+    this.minPressedDuration = const Duration(milliseconds: 80),
   });
 
   final IconData? icon;
@@ -383,33 +388,91 @@ class AppSquareIconButton extends StatelessWidget {
   final double? height;
   final AlignmentGeometry alignment;
   final HitTestBehavior hitTestBehavior;
+  final bool enableTapScale;
+  final double pressedScale;
+  final Duration scaleDuration;
+  final Curve scaleCurve;
+  final Duration minPressedDuration;
+
+  @override
+  State<AppSquareIconButton> createState() => _AppSquareIconButtonState();
+}
+
+class _AppSquareIconButtonState extends State<AppSquareIconButton> {
+  bool _pressed = false;
+  DateTime? _pressedAt;
+
+  void _setPressed(bool v) {
+    if (_pressed == v) return;
+    setState(() => _pressed = v);
+  }
+
+  void _handleTapDown() {
+    if (!widget.enableTapScale) return;
+    _pressedAt = DateTime.now();
+    _setPressed(true);
+  }
+
+  void _handleTapEnd() {
+    if (!widget.enableTapScale) return;
+    final pressedAt = _pressedAt;
+    _pressedAt = null;
+    if (pressedAt == null) {
+      _setPressed(false);
+      return;
+    }
+
+    final elapsed = DateTime.now().difference(pressedAt);
+    final remaining = widget.minPressedDuration - elapsed;
+    if (remaining <= Duration.zero) {
+      _setPressed(false);
+      return;
+    }
+
+    Future<void>.delayed(remaining, () {
+      if (!mounted) return;
+      if (_pressedAt != null) return;
+      _setPressed(false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    assert(icon != null || child != null);
-    final content = child ?? Icon(icon, size: iconSize, color: iconColor);
+    assert(widget.icon != null || widget.child != null);
+    final content = widget.child ??
+        Icon(widget.icon, size: widget.iconSize, color: widget.iconColor);
 
     final decorated = DecoratedBox(
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: borderRadius,
-        border: border,
+        color: widget.backgroundColor,
+        borderRadius: widget.borderRadius,
+        border: widget.border,
       ),
       child: Padding(
-        padding: padding,
-        child: Align(alignment: alignment, child: content),
+        padding: widget.padding,
+        child: Align(alignment: widget.alignment, child: content),
       ),
     );
 
-    final sized = (width != null || height != null)
-        ? SizedBox(width: width, height: height, child: decorated)
+    final sized = (widget.width != null || widget.height != null)
+        ? SizedBox(width: widget.width, height: widget.height, child: decorated)
         : decorated;
 
     return GestureDetector(
-      behavior: hitTestBehavior,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: sized,
+      behavior: widget.hitTestBehavior,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      onTapDown: widget.enableTapScale ? (_) => _handleTapDown() : null,
+      onTapUp: widget.enableTapScale ? (_) => _handleTapEnd() : null,
+      onTapCancel: widget.enableTapScale ? _handleTapEnd : null,
+      child: AnimatedScale(
+        scale: widget.enableTapScale
+            ? (_pressed ? widget.pressedScale : 1.0)
+            : 1.0,
+        duration: widget.scaleDuration,
+        curve: widget.scaleCurve,
+        child: sized,
+      ),
     );
   }
 }
