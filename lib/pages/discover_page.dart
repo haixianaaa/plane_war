@@ -3,6 +3,8 @@ import 'package:flutter_application_2/models/creator_card_data.dart';
 import 'package:flutter_application_2/widgets/creator_card.dart';
 import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
+import 'package:flutter_application_2/widgets/app_page_background.dart';
+import 'package:flutter_application_2/widgets/app_button.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({super.key});
@@ -118,14 +120,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     final t = AppLocalizations.of(context);
     final brand = AppBrandTheme.of(context);
     final items = _filteredItems;
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFEAF5FF), Color(0xFFF5EDFF)],
-        ),
-      ),
+    return AppPageBackground(
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -139,36 +134,33 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     style: const TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w800,
-                      color: Color(0xFF3B0C56),
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const Spacer(),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: brand.accentColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  AppSquareIconButton(
+                    backgroundColor: brand.accentColor,
+                    borderRadius: BorderRadius.circular(20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
                     ),
-                    onPressed: () {},
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.add, size: 26),
-                        const SizedBox(width: 2), // ← 改这里控制 icon 和文字间距
+                        const Icon(Icons.add, size: 26, color: Colors.white),
+                        const SizedBox(width: 2),
                         Text(
                           t.discoverCreate,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -212,14 +204,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                           maintainAnimation: true,
                           maintainSize: true,
                           maintainState: true,
-                          child: IconButton(
+                          child: AppSquareIconButton(
+                            width: 44,
+                            height: 40,
+                            backgroundColor: Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
                             padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 44,
-                              minHeight: 40,
-                            ),
-                            icon: const Icon(Icons.close_rounded, size: 20),
-                            onPressed: () {
+                            child: const Icon(Icons.close_rounded, size: 20),
+                            onTap: () {
                               _searchController.clear();
                               setState(() {
                                 _draftKeyword = '';
@@ -245,37 +237,33 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   itemBuilder: (context, index) {
                     final tag = _tags[index];
                     final selected = tag == _selectedTag;
-                    return ChoiceChip(
+                    return AppSquareIconButton(
                       key: _tagKeys[index],
-                      showCheckmark: false,
-                      label: Text(
+                      backgroundColor: Colors.white.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(
+                        color: selected ? brand.accentColor : Colors.transparent,
+                        width: 2,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      child: Text(
                         tag,
                         style: TextStyle(
-                          fontWeight: selected
-                              ? FontWeight.w500
-                              : FontWeight.w300,
+                          fontWeight: selected ? FontWeight.w500 : FontWeight.w300,
                           color: selected
-                              ? const Color(0xFF3B0C56)
+                              ? AppColors.textPrimary
                               : const Color(0xFF6B6B6B),
                         ),
                       ),
-                      selected: selected,
-                      onSelected: (_) {
+                      onTap: () {
                         setState(() => _selectedTag = tag);
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           _scrollSelectedTagToLeft(index);
                         });
                       },
-                      backgroundColor: Colors.white.withValues(alpha: 0.9),
-                      selectedColor: Colors.white,
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                          color: selected
-                              ? brand.accentColor
-                              : Colors.transparent,
-                          width: 2,
-                        ),
-                      ),
                     );
                   },
                 ),

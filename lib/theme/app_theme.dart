@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' show lerpDouble;
 
+/// App-level color tokens (keep const for wide reuse).
+class AppColors {
+  AppColors._();
+
+  /// Main page background base.
+  static const Color pageBackground = Color(0xFFF7F7FA);
+
+  /// Primary text color (titles + main content).
+  static const Color textPrimary = Color(0xFF3B0C56);
+
+  /// Shared top background gradient colors.
+  static const Color bgTopLeft = Color(0xFFEAF5FF);
+  static const Color bgTopRight = Color(0xFFF5EDFF);
+
+  /// Chat detail bottom input area background.
+  static const Color chatBottomBarBackground = Color(0xFFF0F0F5);
+}
+
 /// App-wide brand theme values (colors + button gradients) in one place.
 ///
 /// Update this file to change the overall purple theme and the primary button

@@ -347,6 +347,73 @@ class AppFrostedGradientPillButton extends StatefulWidget {
       _AppFrostedGradientPillButtonState();
 }
 
+/// Square icon button used across pages (extracted from chat list UI).
+@immutable
+class AppSquareIconButton extends StatelessWidget {
+  const AppSquareIconButton({
+    super.key,
+    this.icon,
+    this.child,
+    required this.onTap,
+    this.onLongPress,
+    this.iconSize = 22,
+    this.backgroundColor = const Color(0xB8FFFFFF),
+    this.borderRadius = const BorderRadius.all(Radius.circular(18)),
+    this.border,
+    this.padding = const EdgeInsets.all(12),
+    this.iconColor = const Color(0xFF3A3A3A),
+    this.width,
+    this.height,
+    this.alignment = Alignment.center,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+  });
+
+  final IconData? icon;
+  final Widget? child;
+  final VoidCallback onTap;
+  final VoidCallback? onLongPress;
+  final double iconSize;
+
+  final Color backgroundColor;
+  final BorderRadiusGeometry borderRadius;
+  final BoxBorder? border;
+  final EdgeInsets padding;
+  final Color iconColor;
+  final double? width;
+  final double? height;
+  final AlignmentGeometry alignment;
+  final HitTestBehavior hitTestBehavior;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(icon != null || child != null);
+    final content = child ?? Icon(icon, size: iconSize, color: iconColor);
+
+    final decorated = DecoratedBox(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: borderRadius,
+        border: border,
+      ),
+      child: Padding(
+        padding: padding,
+        child: Align(alignment: alignment, child: content),
+      ),
+    );
+
+    final sized = (width != null || height != null)
+        ? SizedBox(width: width, height: height, child: decorated)
+        : decorated;
+
+    return GestureDetector(
+      behavior: hitTestBehavior,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: sized,
+    );
+  }
+}
+
 class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillButton> {
   bool _pressed = false;
 

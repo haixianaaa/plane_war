@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
+import 'package:flutter_application_2/widgets/app_page_background.dart';
+import 'package:flutter_application_2/widgets/app_button.dart';
 
-const _chatDetailTextColor = Color(0xFF3B0C56);
-const _chatDetailBackground = Color(0xFFF7F7FA);
-const _chatDetailBottomBarBackground = Color(0xFFF0F0F5);
+const _chatDetailTextColor = AppColors.textPrimary;
+const _chatDetailBackground = AppColors.pageBackground;
+const _chatDetailBottomBarBackground = AppColors.chatBottomBarBackground;
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage({
@@ -98,42 +100,9 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
-            children: [
-              const Positioned.fill(
-                child: ColoredBox(color: _chatDetailBackground),
-              ),
-              Positioned.fill(
-                child: ShaderMask(
-                  shaderCallback: (bounds) {
-                    return const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFFFFFFFF),
-                        Color(0xFFFFFFFF),
-                        Color(0x00FFFFFF),
-                      ],
-                      stops: [0.0, 0.62, 1.0],
-                    ).createShader(bounds);
-                  },
-                  blendMode: BlendMode.dstIn,
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.topRight,
-                        colors: [
-                          Color(0xFFEAF5FF),
-                          Color(0xFFF5EDFF),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SafeArea(
-                child: Column(
+          child: AppPageBackground(
+            child: SafeArea(
+              child: Column(
                   children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
@@ -223,30 +192,26 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                             ),
                           ),
                           const SizedBox(width: 12),
-                          Container(
-                            height: 40,
+                          AppSquareIconButton(
                             width: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
+                            height: 40,
+                            backgroundColor: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            padding: EdgeInsets.zero,
+                            child: Icon(
+                              Icons.send_rounded,
+                              color: brand.seedColor,
+                              size: 22,
                             ),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.send_rounded,
-                                color: brand.seedColor,
-                                size: 22,
-                              ),
-                            ),
+                            onTap: () {},
                           ),
                         ],
                       ),
                     ),
                   ),
                 ],
-                ),
               ),
-            ],
+            ),
           ),
         ),
       ),

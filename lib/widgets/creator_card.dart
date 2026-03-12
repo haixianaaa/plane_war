@@ -88,7 +88,7 @@ class _CreatorCardState extends State<CreatorCard> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          color: Color(0xFF3B0C56),
+                          color: AppColors.textPrimary,
                           fontSize: 18,
                         ),
                       ),

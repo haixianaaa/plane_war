@@ -3,6 +3,7 @@ import 'package:flutter_application_2/l10n/app_localizations.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 import 'package:flutter_application_2/pages/settings_page.dart';
 import 'package:flutter_application_2/icons/remix_icons.dart';
+import 'package:flutter_application_2/widgets/app_button.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -41,9 +42,14 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
                     const Spacer(),
-                    _CircleIconButton(
+                    AppSquareIconButton(
                       icon: RemixIcons.settings3Line,
                       iconSize: 24,
+                      width: 44,
+                      height: 44,
+                      backgroundColor: Colors.white.withValues(alpha: 0.78),
+                      borderRadius: BorderRadius.circular(999),
+                      padding: const EdgeInsets.all(10),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => const SettingsPage()),
@@ -124,8 +130,14 @@ class ProfilePage extends StatelessWidget {
                                           ),
               ),
                                       ),
-                                      _CircleIconButton(
+                                      AppSquareIconButton(
                                         icon: RemixIcons.edit2Line,
+                                        width: 44,
+                                        height: 44,
+                                        backgroundColor:
+                                            Colors.white.withValues(alpha: 0.78),
+                                        borderRadius: BorderRadius.circular(999),
+                                        padding: const EdgeInsets.all(10),
                                         onTap: () {},
                                       ),
                                     ],
@@ -163,33 +175,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({
-    required this.icon,
-    required this.onTap,
-    this.iconSize = 22,
-  });
-
-  final IconData icon;
-  final VoidCallback onTap;
-  final double iconSize;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.78),
-      shape: const CircleBorder(),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-      onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Icon(icon, size: iconSize, color: const Color(0xFF3A3A3A)),
-        ),
-      ),
-    );
-  }
-}
+// _CircleIconButton removed in favor of AppSquareIconButton.
 
 class _AvatarPlaceholder extends StatelessWidget {
   const _AvatarPlaceholder({required this.size, required this.ringColor});
