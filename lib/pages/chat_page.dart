@@ -77,6 +77,7 @@ class ChatPage extends StatelessWidget {
                                     builder: (_) => ChatDetailPage(
                                       name: item.name,
                                       avatarSeed: item.avatarSeed,
+                                        sessionId: item.sessionId,
                                     ),
                                   ),
                                 );
@@ -289,6 +290,7 @@ class _ChatItem {
     required this.date,
     required this.unread,
     required this.avatarSeed,
+    required this.sessionId,
   });
 
   final String name;
@@ -296,6 +298,7 @@ class _ChatItem {
   final String date;
   final int unread;
   final int avatarSeed;
+  final int sessionId;
 }
 
 const _chatSlidableGroupTag = 'chat_list_slidable_group';
@@ -307,6 +310,7 @@ const List<_ChatItem> _demoItems = [
     date: '2/24/2026',
     unread: 2,
     avatarSeed: 1,
+    sessionId: 1001,
   ),
   _ChatItem(
     name: '王嘉尔',
@@ -314,6 +318,7 @@ const List<_ChatItem> _demoItems = [
     date: '2/24/2026',
     unread: 1,
     avatarSeed: 2,
+    sessionId: 1002,
   ),
 ];
 

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
+
+import 'package:dio/dio.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_application_2/models/chat_models.dart';
+import 'package:flutter_application_2/network/app_network.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 import 'package:flutter_application_2/widgets/app_page_background.dart';
 import 'package:flutter_application_2/widgets/app_button.dart';
@@ -13,10 +19,12 @@ class ChatDetailPage extends StatefulWidget {
     super.key,
     required this.name,
     required this.avatarSeed,
+    required this.sessionId,
   });
 
   final String name;
   final int avatarSeed;
+  final int sessionId;
 
   @override
   State<ChatDetailPage> createState() => _ChatDetailPageState();
@@ -28,7 +36,10 @@ class _ChatDetailPageState extends State<ChatDetailPage>
   final ScrollController _scrollController = ScrollController();
   final FocusNode _inputFocusNode = FocusNode();
 
-  late final List<_ChatMessage> _messages = _buildMessages(widget.name);
+  final List<ChatMessage> _messages = <ChatMessage>[];
+  StreamSubscription<String>? _streamSub;
+  CancelToken? _cancelToken;
+  bool _sending = false;
 
   @override
   void initState() {
@@ -43,6 +54,8 @@ class _ChatDetailPageState extends State<ChatDetailPage>
 
   @override
   void dispose() {
+    _streamSub?.cancel();
+    _cancelToken?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     _inputFocusNode.dispose();
     _scrollController.dispose();
@@ -77,6 +90,112 @@ class _ChatDetailPageState extends State<ChatDetailPage>
       target,
       duration: const Duration(milliseconds: 50),
       curve: Curves.easeOut,
+    );
+  }
+
+  bool _isNearBottom() {
+    if (!_scrollController.hasClients) return true;
+    final pos = _scrollController.position;
+    return (pos.maxScrollExtent - pos.pixels) < 80;
+  }
+
+  void _send() {
+    if (_sending) return;
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+
+    _controller.clear();
+    FocusScope.of(context).unfocus();
+
+    final now = DateTime.now();
+    final userMsg = ChatMessage(
+      id: newChatMessageId(),
+      role: ChatRole.user,
+      content: text,
+      createdAt: now,
+      status: ChatMessageStatus.complete,
+    );
+    final assistantId = newChatMessageId();
+    final assistantMsg = ChatMessage(
+      id: assistantId,
+      role: ChatRole.assistant,
+      content: '',
+      createdAt: now,
+      status: ChatMessageStatus.generating,
+    );
+
+    final shouldScroll = _isNearBottom();
+    setState(() {
+      _messages.add(userMsg);
+      _messages.add(assistantMsg);
+      _sending = true;
+    });
+    if (shouldScroll) _scheduleScrollToBottom();
+
+    _cancelToken?.cancel();
+    _cancelToken = CancelToken();
+    _streamSub?.cancel();
+
+    final payload = <String, dynamic>{
+      'max_tokens': 1024,
+      'model': 'qwen-plus',
+      'temperature': 0.5,
+      'top_p': 1,
+      'presence_penalty': 0,
+      'frequency_penalty': 0,
+      'messages': _messages
+          .where((m) => m.status != ChatMessageStatus.generating)
+          .map((m) => {
+                'role': m.role == ChatRole.user ? 'user' : 'assistant',
+                'content': m.content,
+              })
+          .toList(),
+      'stream': true,
+      'kid': '',
+      'chat_type': 0,
+      'appId': '',
+      'hasAttachment': false,
+      'autoSelectModel': false,
+      'sessionId': widget.sessionId,
+    };
+
+    _streamSub = AppNetwork.chat
+        .sendStream(payload: payload, cancelToken: _cancelToken)
+        .listen(
+      (chunk) {
+        final idx = _messages.lastIndexWhere((m) => m.id == assistantId);
+        if (idx < 0) return;
+        final shouldScroll2 = _isNearBottom();
+        setState(() {
+          final cur = _messages[idx];
+          _messages[idx] = cur.copyWith(content: cur.content + chunk);
+        });
+        if (shouldScroll2) _scheduleScrollToBottom();
+      },
+      onError: (_) {
+        final idx = _messages.lastIndexWhere((m) => m.id == assistantId);
+        if (idx >= 0) {
+          setState(() {
+            _messages[idx] = _messages[idx].copyWith(status: ChatMessageStatus.error);
+            _sending = false;
+          });
+        } else {
+          setState(() => _sending = false);
+        }
+      },
+      onDone: () {
+        final idx = _messages.lastIndexWhere((m) => m.id == assistantId);
+        if (idx >= 0) {
+          setState(() {
+            _messages[idx] =
+                _messages[idx].copyWith(status: ChatMessageStatus.complete);
+            _sending = false;
+          });
+        } else {
+          setState(() => _sending = false);
+        }
+      },
+      cancelOnError: true,
     );
   }
 
@@ -187,7 +306,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                                   fontWeight: FontWeight.w300,
                                 ),
                                 textInputAction: TextInputAction.send,
-                                onSubmitted: (_) {},
+                              onSubmitted: (_) => _send(),
                               ),
                             ),
                           ),
@@ -203,7 +322,7 @@ class _ChatDetailPageState extends State<ChatDetailPage>
                               color: brand.seedColor,
                               size: 22,
                             ),
-                            onTap: () {},
+                            onTap: _send,
                           ),
                         ],
                       ),
@@ -249,7 +368,7 @@ class _MessageRow extends StatelessWidget {
     required this.brand,
   });
 
-  final _ChatMessage message;
+  final ChatMessage message;
   final int avatarSeed;
   final AppBrandTheme brand;
 
@@ -259,6 +378,28 @@ class _MessageRow extends StatelessWidget {
       avatarSeed: message.isMine ? avatarSeed + 50 : avatarSeed,
       brand: brand,
     );
+
+    final bubbleChild = (message.status == ChatMessageStatus.generating &&
+            message.content.isEmpty)
+        ? SizedBox(
+            width: 44,
+            height: 20,
+            child: Center(
+              child: SpinKitThreeBounce(
+                color: message.isMine ? Colors.white : brand.seedColor,
+                size: 12,
+              ),
+            ),
+          )
+        : Text(
+            message.content,
+            style: TextStyle(
+              color: message.isMine ? Colors.white : Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+              height: 1.4,
+            ),
+          );
 
     return Row(
       mainAxisAlignment:
@@ -270,21 +411,22 @@ class _MessageRow extends StatelessWidget {
           const SizedBox(width: 10),
         ],
         Flexible(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            decoration: BoxDecoration(
-              color: message.isMine ? brand.seedColor : Colors.white,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Text(
-              message.text,
-              style: TextStyle(
-                color: message.isMine ? Colors.white : Colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                height: 1.4,
-              ),
-            ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: constraints.maxWidth * 0.90,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: message.isMine ? brand.seedColor : Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: bubbleChild,
+                ),
+              );
+            },
           ),
         ),
         if (message.isMine) ...[
@@ -330,40 +472,4 @@ class _ChatAvatar extends StatelessWidget {
   }
 }
 
-class _ChatMessage {
-  const _ChatMessage({
-    required this.text,
-    required this.isMine,
-  });
-
-  final String text;
-  final bool isMine;
-}
-
-List<_ChatMessage> _buildMessages(String name) {
-  switch (name) {
-    case '丹妮尔':
-      return const [
-        _ChatMessage(text: '今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？', isMine: false),
-        _ChatMessage(text: '今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？今天过得怎么样？', isMine: false),
-        _ChatMessage(text: '还不错，刚忙完。', isMine: true),
-        _ChatMessage(text: '那就好，晚上想聊聊吗？', isMine: false),
-        _ChatMessage(text: '可以呀，我晚点有空。', isMine: true),
-        _ChatMessage(text: '那我等你消息。', isMine: false),
-      ];
-    case '王嘉尔':
-      return const [
-        _ChatMessage(text: '那就好，别生气了，咱们继续聊聊你最近在忙什么？', isMine: false),
-        _ChatMessage(text: '好的', isMine: true),
-        _ChatMessage(text: '我挺好奇的，说说看，我听着呢。', isMine: false),
-        _ChatMessage(text: '那你就等着吧', isMine: true),
-        _ChatMessage(text: '哈哈，好，我等着你呢，反正我闲着也是闲着。', isMine: false),
-        _ChatMessage(text: '你这话说一半吊我胃口，是不是有什么惊喜要分享？', isMine: false),
-      ];
-    default:
-      return const [
-        _ChatMessage(text: '你好呀。', isMine: false),
-        _ChatMessage(text: '你好。', isMine: true),
-      ];
-  }
-}
+// Live streaming messages are handled via `/chat/send` SSE.

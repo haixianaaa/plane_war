@@ -1,6 +1,7 @@
 import 'api_client.dart';
 import 'app_config.dart';
 import 'auth_api.dart';
+import 'chat_api.dart';
 import 'token_store.dart';
 
 /// App-wide network singletons.
@@ -24,6 +25,8 @@ class AppNetwork {
   );
 
   static final AuthApi auth = AuthApi(api, tokenStore);
+
+  static final ChatApi chat = ChatApi(api);
 }
 
 

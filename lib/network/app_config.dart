@@ -7,7 +7,7 @@ class AppConfig {
   /// Default: Cloudflare tunnel domain (no trailing slash).
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://certainly-posing-blackberry-touch.trycloudflare.com',
+    defaultValue: 'https://bicycle-rubber-formerly-hollywood.trycloudflare.com',
   );
 
   static String normalizeBaseUrl(String url) {
