@@ -236,7 +236,7 @@ class _SlideActionsPane extends StatelessWidget {
           children: [
             _SlideSquareActionButton(
               backgroundColor: primaryColor,
-              icon: Icons.star_outline_rounded,
+              icon: RemixIcons.pushPinLine,
               onTap: onPinTap,
             ),
             const SizedBox(width: 12),
@@ -276,7 +276,7 @@ class _SlideSquareActionButton extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(22),
         ),
-        child: Icon(icon, size: 30, color: Colors.white),
+        child: Icon(icon, size: 24, color: Colors.white),
       ),
     );
   }

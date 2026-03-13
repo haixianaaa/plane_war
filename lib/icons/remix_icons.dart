@@ -17,6 +17,10 @@ class RemixIcons {
 
   /// `.ri-user-add-line`
   static const IconData userAddLine = IconData(0xF25E, fontFamily: _fontFamily);
+
+  /// 置顶
+  static const IconData pushPinLine = IconData(0xF039, fontFamily: _fontFamily);
+  static const IconData unPinLine = IconData(0xF377, fontFamily: _fontFamily);
 }
 
 
