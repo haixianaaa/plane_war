@@ -187,8 +187,13 @@ class _ChatDetailPageState extends State<ChatDetailPage>
         final idx = _messages.lastIndexWhere((m) => m.id == assistantId);
         if (idx >= 0) {
           setState(() {
-            _messages[idx] =
-                _messages[idx].copyWith(status: ChatMessageStatus.complete);
+            final cur = _messages[idx];
+            _messages[idx] = cur.content.isEmpty
+                ? cur.copyWith(
+                    status: ChatMessageStatus.error,
+                    content: '（无输出）',
+                  )
+                : cur.copyWith(status: ChatMessageStatus.complete);
             _sending = false;
           });
         } else {
