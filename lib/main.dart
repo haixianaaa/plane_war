@@ -1,68 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_application_2/app/auth_controller.dart';
-import 'package:flutter_application_2/app/locale_controller.dart';
-import 'package:flutter_application_2/network/app_network.dart';
-import 'package:flutter_application_2/pages/app_entry.dart';
-import 'package:flutter_application_2/theme/app_theme.dart';
-import 'package:flutter_application_2/widgets/global_tap_haptics.dart';
-import 'package:flutter_application_2/l10n/app_localizations.dart';
-import 'package:flutter_application_2/services/auth_service.dart';
+import 'package:flutter_application_2/pages/game_page.dart';
 
+/// 应用程序入口函数。
+///
+/// 在应用启动前完成必要的初始化工作：
+/// 1. 确保 Flutter 绑定初始化完成
+/// 2. 设置屏幕方向为竖屏
+/// 3. 启动 Flutter 应用
 Future<void> main() async {
+  /// 确保 Flutter 绑定初始化完成
   WidgetsFlutterBinding.ensureInitialized();
-  await AppNetwork.init();
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  /// 设置屏幕方向为竖屏
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-  static final _localeController = LocaleController();
-  static final _authController = AuthController();
-
-  static const _uiStyle = SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-    statusBarBrightness: Brightness.light,
+  /// 设置系统UI样式
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+    ),
   );
 
+  /// 启动 Flutter 应用
+  runApp(const PlaneWarApp());
+}
+
+/// 飞机大战应用程序根组件。
+///
+/// 作为整个应用的顶层配置入口，负责：
+/// - 配置应用主题
+/// - 设置游戏主页面
+class PlaneWarApp extends StatelessWidget {
+  /// 构造函数，使用 const 确保组件不可变
+  const PlaneWarApp({super.key});
+
+  /// 构建应用 UI。
+  ///
+  /// [context] 构建上下文
+  /// 返回配置完成的 MaterialApp 组件
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-    return LocaleScope(
-      controller: _localeController,
-      child: AnimatedBuilder(
-        animation: _localeController,
-        builder: (context, _) {
-          return AuthScope(
-            controller: _authController,
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Find App',
-              locale: _localeController.locale,
-              supportedLocales: AppLocalizations.supportedLocales,
-              localizationsDelegates: [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              builder: (context, child) {
-                if (child == null) return const SizedBox.shrink();
-                return AnnotatedRegion<SystemUiOverlayStyle>(
-                  value: _uiStyle,
-                  child: GlobalTapHaptics(enabled: false, child: child),
-                );
-              },
-              theme: AppTheme.light(),
-              home: AppEntry(authService: authService),
-            ),
-          );
-        },
+    return MaterialApp(
+      /// 隐藏调试模式横幅
+      debugShowCheckedModeBanner: false,
+
+      /// 应用标题
+      title: '飞机大战',
+
+      /// 应用主题配置
+      theme: ThemeData(
+        /// 使用深色主题
+        brightness: Brightness.dark,
+
+        /// 主色调
+        primarySwatch: Colors.blue,
+
+        /// 背景色
+        scaffoldBackgroundColor: const Color(0xFF0A0E27),
+
+        /// 禁用材质3
+        useMaterial3: false,
       ),
+
+      /// 主页面设置为游戏页面
+      home: const GamePage(),
     );
   }
 }
-

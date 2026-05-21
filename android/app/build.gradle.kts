@@ -6,9 +6,8 @@ plugins {
 }
 
 android {
-    namespace = "com.example.flutter_application_2"
+    namespace = "com.plane_war.app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -20,10 +19,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.flutter_application_2"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.plane_war.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -32,11 +28,27 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
+
+    // Force use of Make instead of Ninja to avoid Windows GetOverlappedResult bug
+    defaultConfig {
+        externalNativeBuild {
+            cmake {
+                arguments += listOf(
+                    "-G", "Unix Makefiles",
+                    "-DCMAKE_MAKE_PROGRAM=C:/Users/wangs/AppData/Local/Android/sdk/ndk/28.2.13676358/prebuilt/windows-x86_64/bin/make.exe"
+                )
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core:1.13.1")
 }
 
 flutter {

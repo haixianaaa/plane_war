@@ -3,17 +3,32 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/theme/app_theme.dart';
 
-/// Unified app button variants.
+/// 应用按钮类型枚举。
 ///
-/// - [AppButtonType.outline] (default): white background with purple border.
-/// - [AppButtonType.primary]: frosted gradient pill button (keeps existing style/behavior).
+/// - [outline] (默认): 白色背景，紫色边框
+/// - [primary]: 毛玻璃渐变胶囊按钮
 enum AppButtonType {
+  /// 描边按钮样式
   outline,
+
+  /// 主色渐变按钮样式
   primary,
 }
 
+/// 毛玻璃渐变胶囊按钮样式配置。
+///
+/// 配置按钮的高度、圆角、模糊度、渐变、阴影等视觉属性。
 @immutable
 class AppFrostedGradientPillButtonStyle {
+  /// 创建样式配置实例。
+  ///
+  /// [height] 按钮高度
+  /// [radius] 圆角半径
+  /// [blurSigma] 模糊度
+  /// [backgroundGradient] 背景渐变
+  /// [shadows] 阴影列表
+  /// [enableHighlightOverlay] 是否启用高光覆盖层
+  /// [highlightOverlayGradient] 高光覆盖层渐变
   const AppFrostedGradientPillButtonStyle({
     this.height = 50,
     this.radius = 30,
@@ -22,24 +37,29 @@ class AppFrostedGradientPillButtonStyle {
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
       colors: [
-        Color(0xE6DEB2FF), // 左：柔粉紫
-        Color(0xE6B794FF), // 中：稍冷静的浅紫
-        Color(0xE6DEB2FF), // 右：柔粉紫
+        /// 左：柔粉紫
+        Color(0xE6DEB2FF),
+        /// 中：稍冷静的浅紫
+        Color(0xE6B794FF),
+        /// 右：柔粉紫
+        Color(0xE6DEB2FF),
       ],
       stops: [0.0, 0.5, 1.0],
     ),
     this.shadows = const [
-      // 顶部微白的高光阴影，增强立体发光感
+      /// 顶部微白的高光阴影，增强立体发光感
       BoxShadow(
         color: Color(0x66FFFFFF),
         blurRadius: 16,
         offset: Offset(0, -4),
       ),
-      // 底部的紫粉色柔光投影
+      /// 底部的紫粉色柔光投影
       BoxShadow(
-        color: Color(0x4DB794FF), // 与按钮同色系的柔光
+        /// 与按钮同色系的柔光
+        color: Color(0x4DB794FF),
         blurRadius: 28,
-        spreadRadius: -2, // 负扩散让光晕不至于太散，更显高级
+        /// 负扩散让光晕不至于太散，更显高级
+        spreadRadius: -2,
         offset: Offset(0, 12),
       ),
     ],
@@ -48,31 +68,66 @@ class AppFrostedGradientPillButtonStyle {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Color(0x59FFFFFF), // 顶部高光（0.35）
-        Color(0x00FFFFFF), // 中间通透
-        Color(0x0DFFFFFF), // 底部微反光（0.05）
+        /// 顶部高光（0.35）
+        Color(0x59FFFFFF),
+        /// 中间通透
+        Color(0x00FFFFFF),
+        /// 底部微反光（0.05）
+        Color(0x0DFFFFFF),
       ],
       stops: [0.0, 0.4, 1.0],
     ),
   });
 
+  /// 按钮高度
   final double height;
+
+  /// 圆角半径
   final double radius;
+
+  /// 模糊度
   final double blurSigma;
 
+  /// 背景渐变
   final LinearGradient backgroundGradient;
+
+  /// 阴影列表
   final List<BoxShadow> shadows;
 
+  /// 是否启用高光覆盖层
   final bool enableHighlightOverlay;
+
+  /// 高光覆盖层渐变
   final LinearGradient highlightOverlayGradient;
 }
 
-/// A single entry button component for the app.
+/// 统一的应用按钮组件。
 ///
-/// - Default `type` is [AppButtonType.outline].
-/// - `type: AppButtonType.primary` reuses [AppFrostedGradientPillButton] unchanged.
+/// 支持两种样式：
+/// - [AppButtonType.outline] (默认): 白色背景，紫色边框
+/// - [AppButtonType.primary]: 毛玻璃渐变胶囊按钮
+///
+/// 支持按下缩放动画效果。
 @immutable
 class AppButton extends StatelessWidget {
+  /// 创建按钮实例。
+  ///
+  /// [text] 按钮文本
+  /// [onTap] 点击回调
+  /// [type] 按钮类型
+  /// [icon] 前置图标
+  /// [iconTextSpacing] 图标与文本间距
+  /// [width] 宽度
+  /// [height] 高度
+  /// [radius] 圆角
+  /// [fontSize] 字体大小
+  /// [fontWeight] 字体粗细
+  /// [textColor] 文本颜色
+  /// [enableTapScale] 是否启用点击缩放
+  /// [pressedScale] 按下时的缩放比例
+  /// [scaleDuration] 缩放动画时长
+  /// [scaleCurve] 缩放动画曲线
+  /// [primaryStyle] 主色按钮样式配置
   const AppButton({
     super.key,
     required this.text,
@@ -93,33 +148,55 @@ class AppButton extends StatelessWidget {
     this.primaryStyle,
   });
 
+  /// 按钮类型
   final AppButtonType type;
+
+  /// 按钮文本
   final String text;
+
+  /// 点击回调
   final VoidCallback? onTap;
 
-  /// Optional icon widget shown before [text].
+  /// 前置图标组件
   final Widget? icon;
+
+  /// 图标与文本间距
   final double iconTextSpacing;
 
+  /// 按钮宽度
   final double? width;
+
+  /// 按钮高度
   final double? height;
+
+  /// 圆角半径
   final double? radius;
 
-  /// Optional text style overrides.
+  /// 字体大小
   final double? fontSize;
+
+  /// 字体粗细
   final FontWeight? fontWeight;
+
+  /// 文本颜色
   final Color? textColor;
 
-  /// Tap feedback: scale down a bit while pressed.
+  /// 是否启用点击缩放动画
   final bool enableTapScale;
+
+  /// 按下时的缩放比例
   final double pressedScale;
+
+  /// 缩放动画时长
   final Duration scaleDuration;
+
+  /// 缩放动画曲线
   final Curve scaleCurve;
 
-  /// Base style for primary gradient button. If [height]/[radius] is provided,
-  /// they will override the corresponding fields in this style.
+  /// 主色按钮样式配置
   final AppFrostedGradientPillButtonStyle? primaryStyle;
 
+  /// 主色按钮默认文本样式
   static const TextStyle _defaultPrimaryTextStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w400,
@@ -127,6 +204,10 @@ class AppButton extends StatelessWidget {
     height: 1.1,
   );
 
+  /// 解析文本样式。
+  ///
+  /// [base] 基础样式
+  /// 返回合并后的文本样式
   TextStyle _resolveTextStyle(TextStyle base) {
     return base.copyWith(
       fontSize: fontSize ?? base.fontSize,
@@ -135,9 +216,16 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  /// 构建按钮 UI。
+  ///
+  /// [context] 构建上下文
+  /// 返回按钮组件
   @override
   Widget build(BuildContext context) {
+    /// 获取品牌主题
     final brand = AppBrandTheme.of(context);
+
+    /// 解析宽度
     final resolvedWidth = width ?? double.infinity;
 
     return SizedBox(
@@ -149,7 +237,13 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  /// 构建主色按钮。
+  ///
+  /// [context] 构建上下文
+  /// [brand] 品牌主题
+  /// 返回主色按钮组件
   Widget _buildPrimary(BuildContext context, AppBrandTheme brand) {
+    /// 获取基础样式
     final baseStyle = primaryStyle ??
         AppFrostedGradientPillButtonStyle(
           blurSigma: brand.primaryButtonBlurSigma,
@@ -157,6 +251,8 @@ class AppButton extends StatelessWidget {
           shadows: brand.primaryButtonShadows,
           highlightOverlayGradient: brand.primaryButtonHighlightOverlayGradient,
         );
+
+    /// 解析样式，如果提供了高度或圆角则覆盖基础样式
     final resolvedStyle = (height != null || radius != null)
         ? AppFrostedGradientPillButtonStyle(
             height: height ?? baseStyle.height,
@@ -169,7 +265,10 @@ class AppButton extends StatelessWidget {
           )
         : baseStyle;
 
+    /// 前置组件
     final leading = icon ?? const SizedBox.shrink();
+
+    /// 图标与文本间距
     final spacing = icon == null ? 0.0 : iconTextSpacing;
 
     return AppFrostedGradientPillButton(
@@ -186,10 +285,21 @@ class AppButton extends StatelessWidget {
     );
   }
 
+  /// 构建描边按钮。
+  ///
+  /// [brand] 品牌主题
+  /// 返回描边按钮组件
   Widget _buildOutline(AppBrandTheme brand) {
+    /// 解析高度
     final resolvedHeight = height ?? 50;
+
+    /// 解析圆角
     final resolvedRadius = radius ?? 30;
+
+    /// 强调色
     final accent = brand.accentColor;
+
+    /// 描边按钮基础文本样式
     final outlineBaseTextStyle = TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w300,
@@ -213,7 +323,25 @@ class AppButton extends StatelessWidget {
   }
 }
 
+/// 描边胶囊按钮组件。
+///
+/// 白色背景，带边框的胶囊形状按钮。
+/// 支持点击缩放动画。
 class _OutlinePillButton extends StatefulWidget {
+  /// 创建描边按钮实例。
+  ///
+  /// [text] 按钮文本
+  /// [onTap] 点击回调
+  /// [icon] 前置图标
+  /// [iconTextSpacing] 图标与文本间距
+  /// [height] 按钮高度
+  /// [radius] 圆角半径
+  /// [accentColor] 强调色
+  /// [textStyle] 文本样式
+  /// [enableTapScale] 是否启用点击缩放
+  /// [pressedScale] 按下时的缩放比例
+  /// [scaleDuration] 缩放动画时长
+  /// [scaleCurve] 缩放动画曲线
   const _OutlinePillButton({
     required this.text,
     required this.onTap,
@@ -229,20 +357,40 @@ class _OutlinePillButton extends StatefulWidget {
     required this.scaleCurve,
   });
 
+  /// 按钮文本
   final String text;
+
+  /// 点击回调
   final VoidCallback? onTap;
 
+  /// 前置图标
   final Widget? icon;
+
+  /// 图标与文本间距
   final double iconTextSpacing;
 
+  /// 按钮高度
   final double height;
+
+  /// 圆角半径
   final double radius;
+
+  /// 强调色（边框颜色）
   final Color accentColor;
+
+  /// 文本样式
   final TextStyle textStyle;
 
+  /// 是否启用点击缩放
   final bool enableTapScale;
+
+  /// 按下时的缩放比例
   final double pressedScale;
+
+  /// 缩放动画时长
   final Duration scaleDuration;
+
+  /// 缩放动画曲线
   final Curve scaleCurve;
 
   @override
@@ -250,18 +398,30 @@ class _OutlinePillButton extends StatefulWidget {
 }
 
 class _OutlinePillButtonState extends State<_OutlinePillButton> {
+  /// 是否处于按下状态
   bool _pressed = false;
 
+  /// 设置按下状态。
+  ///
+  /// [v] 是否按下
   void _setPressed(bool v) {
     if (_pressed == v) return;
     setState(() => _pressed = v);
   }
 
+  /// 构建描边按钮 UI。
+  ///
+  /// [context] 构建上下文
+  /// 返回描边按钮组件
   @override
   Widget build(BuildContext context) {
+    /// 是否禁用
     final disabled = widget.onTap == null;
+
+    /// 禁用时的透明度
     final opacity = disabled ? 0.55 : 1.0;
 
+    /// 图标与文本间距
     final spacing = widget.icon == null ? 0.0 : widget.iconTextSpacing;
 
     return Opacity(
@@ -283,16 +443,21 @@ class _OutlinePillButtonState extends State<_OutlinePillButton> {
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
+              /// 白色背景
               color: Colors.white,
               borderRadius: BorderRadius.circular(widget.radius),
+              /// 强调色边框
               border: Border.all(color: widget.accentColor, width: 1),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                /// 前置图标
                 if (widget.icon != null) widget.icon!,
                 if (widget.icon != null) SizedBox(width: spacing),
+
+                /// 按钮文本
                 Text(
                   widget.text,
                   textAlign: TextAlign.center,
@@ -307,7 +472,23 @@ class _OutlinePillButtonState extends State<_OutlinePillButton> {
   }
 }
 
+/// 毛玻璃渐变胶囊按钮组件。
+///
+/// 带有模糊背景、渐变色、阴影效果的胶囊形状按钮。
+/// 支持点击缩放动画。
 class AppFrostedGradientPillButton extends StatefulWidget {
+  /// 创建毛玻璃渐变按钮实例。
+  ///
+  /// [leading] 前置组件
+  /// [text] 按钮文本
+  /// [onTap] 点击回调
+  /// [style] 按钮样式配置
+  /// [enableTapScale] 是否启用点击缩放
+  /// [pressedScale] 按下时的缩放比例
+  /// [scaleDuration] 缩放动画时长
+  /// [scaleCurve] 缩放动画曲线
+  /// [textStyle] 文本样式
+  /// [iconTextSpacing] 图标与文本间距
   const AppFrostedGradientPillButton({
     super.key,
     required this.leading,
@@ -327,19 +508,34 @@ class AppFrostedGradientPillButton extends StatefulWidget {
     this.iconTextSpacing = 8,
   });
 
+  /// 前置组件
   final Widget leading;
+
+  /// 按钮文本
   final String text;
+
+  /// 点击回调
   final VoidCallback? onTap;
 
+  /// 按钮样式配置
   final AppFrostedGradientPillButtonStyle style;
 
-  /// Tap feedback: scale down a bit while pressed.
+  /// 是否启用点击缩放动画
   final bool enableTapScale;
+
+  /// 按下时的缩放比例
   final double pressedScale;
+
+  /// 缩放动画时长
   final Duration scaleDuration;
+
+  /// 缩放动画曲线
   final Curve scaleCurve;
 
+  /// 文本样式
   final TextStyle textStyle;
+
+  /// 图标与文本间距
   final double iconTextSpacing;
 
   @override
@@ -347,9 +543,33 @@ class AppFrostedGradientPillButton extends StatefulWidget {
       _AppFrostedGradientPillButtonState();
 }
 
-/// Square icon button used across pages (extracted from chat list UI).
+/// 方形图标按钮组件。
+///
+/// 用于页面中的方形图标按钮，支持点击缩放动画。
+/// 从聊天列表 UI 中提取的通用组件。
 @immutable
 class AppSquareIconButton extends StatefulWidget {
+  /// 创建方形图标按钮实例。
+  ///
+  /// [icon] 图标数据
+  /// [child] 子组件（与 icon 二选一）
+  /// [onTap] 点击回调
+  /// [onLongPress] 长按回调
+  /// [iconSize] 图标大小
+  /// [backgroundColor] 背景颜色
+  /// [borderRadius] 圆角
+  /// [border] 边框
+  /// [padding] 内边距
+  /// [iconColor] 图标颜色
+  /// [width] 宽度
+  /// [height] 高度
+  /// [alignment] 对齐方式
+  /// [hitTestBehavior] 点击测试行为
+  /// [enableTapScale] 是否启用点击缩放
+  /// [pressedScale] 按下时的缩放比例
+  /// [scaleDuration] 缩放动画时长
+  /// [scaleCurve] 缩放动画曲线
+  /// [minPressedDuration] 最小按下时长
   const AppSquareIconButton({
     super.key,
     this.icon,
@@ -373,25 +593,61 @@ class AppSquareIconButton extends StatefulWidget {
     this.minPressedDuration = const Duration(milliseconds: 80),
   });
 
+  /// 图标数据
   final IconData? icon;
+
+  /// 子组件（与 icon 二选一）
   final Widget? child;
+
+  /// 点击回调
   final VoidCallback onTap;
+
+  /// 长按回调
   final VoidCallback? onLongPress;
+
+  /// 图标大小
   final double iconSize;
 
+  /// 背景颜色
   final Color backgroundColor;
+
+  /// 圆角
   final BorderRadiusGeometry borderRadius;
+
+  /// 边框
   final BoxBorder? border;
+
+  /// 内边距
   final EdgeInsets padding;
+
+  /// 图标颜色
   final Color iconColor;
+
+  /// 宽度
   final double? width;
+
+  /// 高度
   final double? height;
+
+  /// 对齐方式
   final AlignmentGeometry alignment;
+
+  /// 点击测试行为
   final HitTestBehavior hitTestBehavior;
+
+  /// 是否启用点击缩放
   final bool enableTapScale;
+
+  /// 按下时的缩放比例
   final double pressedScale;
+
+  /// 缩放动画时长
   final Duration scaleDuration;
+
+  /// 缩放动画曲线
   final Curve scaleCurve;
+
+  /// 最小按下时长
   final Duration minPressedDuration;
 
   @override
@@ -399,36 +655,52 @@ class AppSquareIconButton extends StatefulWidget {
 }
 
 class _AppSquareIconButtonState extends State<AppSquareIconButton> {
+  /// 是否处于按下状态
   bool _pressed = false;
+
+  /// 按下时间
   DateTime? _pressedAt;
 
+  /// 设置按下状态。
+  ///
+  /// [v] 是否按下
   void _setPressed(bool v) {
     if (_pressed == v) return;
     setState(() => _pressed = v);
   }
 
+  /// 处理按下开始。
   void _handleTapDown() {
     if (!widget.enableTapScale) return;
     _pressedAt = DateTime.now();
     _setPressed(true);
   }
 
+  /// 处理按下结束。
   void _handleTapEnd() {
     if (!widget.enableTapScale) return;
+
+    /// 获取按下时间
     final pressedAt = _pressedAt;
     _pressedAt = null;
+
     if (pressedAt == null) {
       _setPressed(false);
       return;
     }
 
+    /// 计算已过去的时间
     final elapsed = DateTime.now().difference(pressedAt);
+
+    /// 计算剩余时间
     final remaining = widget.minPressedDuration - elapsed;
+
     if (remaining <= Duration.zero) {
       _setPressed(false);
       return;
     }
 
+    /// 延迟后取消按下状态
     Future<void>.delayed(remaining, () {
       if (!mounted) return;
       if (_pressedAt != null) return;
@@ -436,12 +708,20 @@ class _AppSquareIconButtonState extends State<AppSquareIconButton> {
     });
   }
 
+  /// 构建方形图标按钮 UI。
+  ///
+  /// [context] 构建上下文
+  /// 返回方形图标按钮组件
   @override
   Widget build(BuildContext context) {
+    /// 确保提供了 icon 或 child
     assert(widget.icon != null || widget.child != null);
+
+    /// 内容组件
     final content = widget.child ??
         Icon(widget.icon, size: widget.iconSize, color: widget.iconColor);
 
+    /// 装饰后的内容
     final decorated = DecoratedBox(
       decoration: BoxDecoration(
         color: widget.backgroundColor,
@@ -454,6 +734,7 @@ class _AppSquareIconButtonState extends State<AppSquareIconButton> {
       ),
     );
 
+    /// 尺寸包装
     final sized = (widget.width != null || widget.height != null)
         ? SizedBox(width: widget.width, height: widget.height, child: decorated)
         : decorated;
@@ -478,16 +759,27 @@ class _AppSquareIconButtonState extends State<AppSquareIconButton> {
 }
 
 class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillButton> {
+  /// 是否处于按下状态
   bool _pressed = false;
 
+  /// 设置按下状态。
+  ///
+  /// [v] 是否按下
   void _setPressed(bool v) {
     if (_pressed == v) return;
     setState(() => _pressed = v);
   }
 
+  /// 构建毛玻璃渐变按钮 UI。
+  ///
+  /// [context] 构建上下文
+  /// 返回毛玻璃渐变按钮组件
   @override
   Widget build(BuildContext context) {
+    /// 是否禁用
     final disabled = widget.onTap == null;
+
+    /// 禁用时的透明度
     final opacity = disabled ? 0.55 : 1.0;
 
     return Opacity(
@@ -507,6 +799,7 @@ class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillBut
           child: ClipRRect(
             borderRadius: BorderRadius.circular(widget.style.radius),
             child: BackdropFilter(
+              /// 模糊滤镜
               filter: ImageFilter.blur(
                 sigmaX: widget.style.blurSigma,
                 sigmaY: widget.style.blurSigma,
@@ -516,12 +809,15 @@ class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillBut
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(widget.style.radius),
+                  /// 背景渐变
                   gradient: widget.style.backgroundGradient,
+                  /// 阴影
                   boxShadow: widget.style.shadows,
                 ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    /// 高光覆盖层
                     if (widget.style.enableHighlightOverlay)
                       Container(
                         decoration: BoxDecoration(
@@ -529,11 +825,16 @@ class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillBut
                           gradient: widget.style.highlightOverlayGradient,
                         ),
                       ),
+
+                    /// 内容行
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        /// 前置组件
                         widget.leading,
                         SizedBox(width: widget.iconTextSpacing),
+
+                        /// 按钮文本
                         Text(
                           widget.text,
                           textAlign: TextAlign.center,
@@ -551,5 +852,3 @@ class _AppFrostedGradientPillButtonState extends State<AppFrostedGradientPillBut
     );
   }
 }
-
-
