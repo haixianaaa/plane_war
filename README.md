@@ -1,111 +1,103 @@
-# Plane War - 飞机大战
-
-A classic plane shooting game built with Flutter.
+# 飞机大战
 
 一款使用 Flutter 开发的经典飞机射击游戏。
 
-## Features
+## 游戏特性
 
-- Player aircraft with smooth touch controls
-- Multiple enemy types with different behaviors
-- Power-up system (shield, rapid fire, triple shot)
-- Gradient backgrounds and particle effects
-- Score tracking and game state management
-- Responsive design for various screen sizes
+- 流畅的触摸控制玩家飞机
+- 多种不同行为的敌机类型
+- 道具系统（护盾、速射、三连发）
+- 渐变背景和粒子特效
+- 分数追踪和游戏状态管理
+- 适配各种屏幕尺寸的响应式设计
 
-## Screenshots
+## 开始使用
 
-| Game Start | In Game | Game Over |
-|------------|---------|-----------|
-| ![Start](screenshots/start.png) | ![Game](screenshots/game.png) | ![Over](screenshots/over.png) |
-
-## Getting Started
-
-### Prerequisites
+### 环境要求
 
 - Flutter SDK 3.0+
 - Dart SDK 3.0+
 - Android Studio / VS Code
-- Android SDK (for Android builds)
+- Android SDK（用于 Android 构建）
 
-### Installation
+### 安装步骤
 
-1. Clone the repository
+1. 克隆仓库
 ```bash
 git clone https://github.com/haixianaaa/plane_war.git
 cd plane_war
 ```
 
-2. Install dependencies
+2. 安装依赖
 ```bash
 flutter pub get
 ```
 
-3. Run the app
+3. 运行应用
 ```bash
 flutter run
 ```
 
-### Build APK
+### 打包 APK
 
-Use the included build script:
+使用内置的打包脚本：
 
 ```powershell
-.\build_apk.ps1 -AppName "MyPlaneWar"
+.\build_apk.ps1 -AppName "我的飞机大战"
 ```
 
-Or build manually:
+或手动构建：
 
 ```bash
 flutter build apk --release
 ```
 
-The APK will be generated at `build/app/outputs/flutter-apk/app-release.apk`.
+APK 文件将生成在 `build/app/outputs/flutter-apk/app-release.apk`。
 
-## Project Structure
+## 项目结构
 
 ```
 lib/
 ├── game/
-│   ├── game_controller.dart    # Game state management
+│   ├── game_controller.dart    # 游戏状态管理
 │   ├── models/
-│   │   └── game_models.dart    # Game entities (Player, Enemy, Bullet, etc.)
+│   │   └── game_models.dart    # 游戏实体（玩家、敌机、子弹等）
 │   └── widgets/
-│       └── game_canvas.dart    # Game rendering widget
+│       └── game_canvas.dart    # 游戏渲染组件
 ├── pages/
-│   └── game_page.dart          # Main game UI
-└── main.dart                   # App entry point
+│   └── game_page.dart          # 主游戏界面
+└── main.dart                   # 应用入口
 ```
 
-## Game Controls
+## 游戏操作
 
-- **Move**: Touch and drag to move the player aircraft
-- **Shoot**: Automatic firing
-- **Power-ups**: Collect items to gain abilities
-  - Shield: Temporary invincibility
-  - Rapid Fire: Increased fire rate
-  - Triple Shot: Fire three bullets at once
+- **移动**：触摸并拖动来移动玩家飞机
+- **射击**：自动开火
+- **道具**：收集道具获得能力
+  - 护盾：临时无敌
+  - 速射：提高射速
+  - 三连发：同时发射三颗子弹
 
-## Technical Notes
+## 技术说明
 
-### Windows Build Fix
+### Windows 构建修复
 
-This project includes a workaround for the Windows Ninja `GetOverlappedResult` bug by using Unix Makefiles instead of Ninja for native builds. See `android/app/build.gradle.kts` for details.
+本项目包含针对 Windows 平台 Ninja `GetOverlappedResult` 错误的解决方案，通过使用 Unix Makefiles 替代 Ninja 进行原生构建。详见 `android/app/build.gradle.kts`。
 
-## Dependencies
+## 依赖
 
-- `flutter` - UI framework
-- `cupertino_icons` - iOS style icons
+- `flutter` - UI 框架
+- `cupertino_icons` - iOS 风格图标
 
-## License
+## 许可证
 
-This project is open source and available under the [MIT License](LICENSE).
+本项目采用 [MIT 许可证](LICENSE) 开源。
 
-## Author
+## 作者
 
 - GitHub: [@haixianaaa](https://github.com/haixianaaa)
 
-## Acknowledgments
+## 致谢
 
-- Built with [Flutter](https://flutter.dev/)
-- Inspired by classic arcade shooting games
+- 使用 [Flutter](https://flutter.dev/) 构建
+- 灵感来源于经典街机射击游戏
